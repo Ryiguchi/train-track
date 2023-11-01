@@ -7,12 +7,71 @@
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M33.5 7.12V4C33.5 3.18 32.82 2.5 32 2.5C31.18 2.5 30.5 3.18 30.5 4V7H17.5V4C17.5 3.18 16.82 2.5 16 2.5C15.18 2.5 14.5 3.18 14.5 4V7.12C9.09997 7.62 6.47997 10.84 6.07997 15.62C6.03997 16.2 6.51997 16.68 7.07997 16.68H40.92C41.5 16.68 41.98 16.18 41.92 15.62C41.52 10.84 38.9 7.62 33.5 7.12Z"
-      fill="#AAAAAA"
+      d="M16 4V10"
+      stroke="#AAAAAA"
+      stroke-width="1.5"
+      stroke-miterlimit="10"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     />
     <path
-      d="M40 19.68H8C6.9 19.68 6 20.58 6 21.68V34C6 40 9 44 16 44H32C39 44 42 40 42 34V21.68C42 20.58 41.1 19.68 40 19.68ZM31.32 39.06C31.02 39.36 30.64 39.5 30.26 39.5C29.88 39.5 29.5 39.36 29.2 39.06L27.72 37.58C26.56 38.34 25.16 38.8 23.66 38.8C19.58 38.8 16.26 35.48 16.26 31.4C16.26 27.32 19.58 24 23.66 24C27.74 24 31.06 27.32 31.06 31.4C31.06 32.9 30.6 34.3 29.84 35.46L31.32 36.94C31.9 37.52 31.9 38.48 31.32 39.06Z"
-      fill="#AAAAAA"
+      d="M32 4V10"
+      stroke="#AAAAAA"
+      stroke-width="1.5"
+      stroke-miterlimit="10"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M36.4 42.8C39.9346 42.8 42.8 39.9346 42.8 36.4C42.8 32.8654 39.9346 30 36.4 30C32.8654 30 30 32.8654 30 36.4C30 39.9346 32.8654 42.8 36.4 42.8Z"
+      stroke="#AAAAAA"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M44 44L42 42"
+      stroke="#AAAAAA"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M7 18.1799H41"
+      stroke="#AAAAAA"
+      stroke-width="1.5"
+      stroke-miterlimit="10"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M26.74 44H16C9 44 6 40 6 34V17C6 11 9 7 16 7H32C39 7 42 11 42 17V26"
+      stroke="#AAAAAA"
+      stroke-width="1.5"
+      stroke-miterlimit="10"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M23.991 27.4H24.0089"
+      stroke="#AAAAAA"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M16.5886 27.4H16.6066"
+      stroke="#AAAAAA"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M16.5886 33.4H16.6066"
+      stroke="#AAAAAA"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     />
   </svg>
 </template>

@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import IconLeftArrow from '../icons/IconLeftArrow.vue';
 import IconCalender from '../icons/IconCalender.vue';
-import IconPlus from '../icons/IconPlus.vue';
 import IconCalenderSearch from '../icons/IconCalenderSearch.vue';
+import IconHome from '../icons/IconHome.vue';
 
 import { useRouter, useRoute } from 'vue-router';
 import { computed, ref } from 'vue';
 
+import { useModalsStore } from '@/stores/modals.store';
+
+// ROUTER
 const router = useRouter();
 const route = ref(useRoute());
 
@@ -43,13 +46,15 @@ function goBack() {
   <header>
     <div><IconLeftArrow @click="goBack" v-if="showIconLeftArrow" /></div>
     <div class="left-side">
-      <IconPlus v-if="showIconPlus" />
       <nav>
         <RouterLink to="/calender" v-if="showIconCalender">
           <IconCalender />
         </RouterLink>
         <RouterLink :to="calenderExercisePath" v-if="showIconCalenderSearch">
           <IconCalenderSearch />
+        </RouterLink>
+        <RouterLink to="/">
+          <IconHome />
         </RouterLink>
       </nav>
     </div>
@@ -59,7 +64,8 @@ function goBack() {
 <style scoped lang="sass">
 header
   width: 100%
-  padding: $sp_1 $sp_6
+  height: 6.6rem
+  padding: $sp_1 0
   display: flex
   align-content: center
   justify-content: space-between

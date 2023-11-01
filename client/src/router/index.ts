@@ -1,7 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import TheHeader from '../components/UI/TheHeader.vue';
-import SelectView from '@/views/SelectView.vue';
+import SelectExerciseView from '@/views/SelectExercise/SelectExerciseView.vue';
+import ExerciseView from '@/views/ExerciseView/ExerciseView.vue';
+import SigninView from '@/views/SigninView/SigninView.vue';
+import CalenderGroupView from '@/views/CalenderGroupView/CalenderGroupView.vue';
+import WorkoutDayView from '@/views/WorkoutDayView/ WorkoutDayView.vue';
+import CalenderExerciseView from '@/views/CalenderExerciseView/CalenderExerciseView.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -13,38 +17,37 @@ const router = createRouter({
     {
       path: '/exercises',
       name: 'select',
-      component: SelectView,
+      component: SelectExerciseView,
     },
 
     {
       path: '/exercises/:id',
       name: 'exercise',
-      component: TheHeader, // Exercise
+      component: ExerciseView,
       props: true,
     },
 
     {
       path: '/calender',
-      name: 'calenderMonth',
-      component: TheHeader,
-      children: [
-        {
-          path: '/day',
-          name: 'calenderDay',
-          component: TheHeader,
-        },
-      ],
+      name: 'calender',
+      component: CalenderGroupView,
     },
     {
-      path: '/calender/:id',
-      name: 'calenderId',
-      component: TheHeader,
+      path: '/calender/:name',
+      name: 'calenderExercise',
+      component: CalenderExerciseView,
+      props: true,
+    },
+    {
+      path: '/workout/:date',
+      name: 'calenderDay',
+      component: WorkoutDayView,
       props: true,
     },
     {
       path: '/signin',
       name: 'signin',
-      component: TheHeader,
+      component: SigninView,
     },
   ],
 });
