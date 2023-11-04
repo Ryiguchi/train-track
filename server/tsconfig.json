@@ -107,5 +107,10 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
-  "files": ["src/types/global.d.ts"]
+  "files": [
+    "src/types/global.d.ts",
+    "src/types/exercise.d.ts",
+    "src/types/schedule.d.ts",
+    "src/types/workout.d.ts"
+  ]
 }

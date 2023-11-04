@@ -19,6 +19,22 @@ input ExerciseData {
   groupId: Int
 }
 
+input ExerciseDataOptional {
+  id: Int!
+  name: String
+  slug: String
+  groupId: Int
+}
+
+type DeletedExercise {
+  id: Int!
+  name: String!
+  slug: String!
+  groupId: Int!
+}
+
 type Mutation {
   addExercise(userData: ExerciseData): Exercise
+  updateExercise(fieldsToUpdate: ExerciseDataOptional): Exercise
+  deleteExercise(id: Int!): DeletedExercise
 }

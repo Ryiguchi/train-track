@@ -5,6 +5,13 @@ type Set {
   reps: Int!
 }
 
+input SetInput {
+  id: String!
+  setNum: Int!
+  weight: Float!
+  reps: Int!
+}
+
 type Workout {
   id: Int!
   date: String!
@@ -16,4 +23,21 @@ type Query {
   workouts: [Workout]
   workoutsByDate(date: String!): [Workout]
   workoutsByExercise(exercise: String!): [Workout]
+}
+
+input AddWorkoutInput {
+  date: String!
+  sets: [SetInput!]!
+  exerciseId: Int!
+}
+
+type Mutation {
+  addWorkout(workoutData: AddWorkoutInput!): Workout
+  deleteWorkout(id: Int!): DeletedWorkout
+}
+type DeletedWorkout {
+  id: Int!
+  date: String!
+  sets: [Set!]!
+  exerciseId: Int!
 }

@@ -16,6 +16,28 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type AddWorkoutInput = {
+  date: Scalars['String']['input'];
+  exerciseId: Scalars['Int']['input'];
+  sets: Array<SetInput>;
+};
+
+export type DeletedExercise = {
+  __typename?: 'DeletedExercise';
+  groupId: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
+};
+
+export type DeletedWorkout = {
+  __typename?: 'DeletedWorkout';
+  date: Scalars['String']['output'];
+  exerciseId: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  sets: Array<Set>;
+};
+
 export type Exercise = {
   __typename?: 'Exercise';
   group: Scalars['String']['output'];
@@ -28,6 +50,13 @@ export type ExerciseData = {
   groupId?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
   slug: Scalars['String']['input'];
+};
+
+export type ExerciseDataOptional = {
+  groupId?: InputMaybe<Scalars['Int']['input']>;
+  id: Scalars['Int']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Group = {
@@ -44,11 +73,59 @@ export type GroupName = {
 export type Mutation = {
   __typename?: 'Mutation';
   addExercise?: Maybe<Exercise>;
+  addGroup?: Maybe<Group>;
+  addScheduleDay?: Maybe<Schedule>;
+  addWorkout?: Maybe<Workout>;
+  deleteExercise?: Maybe<DeletedExercise>;
+  deleteGroup?: Maybe<Group>;
+  deleteWorkout?: Maybe<DeletedWorkout>;
+  updateExercise?: Maybe<Exercise>;
+  updateScheduleDay?: Maybe<Schedule>;
 };
 
 
 export type MutationAddExerciseArgs = {
   userData?: InputMaybe<ExerciseData>;
+};
+
+
+export type MutationAddGroupArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationAddScheduleDayArgs = {
+  scheduleData?: InputMaybe<ScheduleInput>;
+};
+
+
+export type MutationAddWorkoutArgs = {
+  workoutData: AddWorkoutInput;
+};
+
+
+export type MutationDeleteExerciseArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteGroupArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteWorkoutArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationUpdateExerciseArgs = {
+  fieldsToUpdate?: InputMaybe<ExerciseDataOptional>;
+};
+
+
+export type MutationUpdateScheduleDayArgs = {
+  fieldsToUpdate?: InputMaybe<UpdateScheduleInput>;
 };
 
 export type Query = {
@@ -78,12 +155,29 @@ export type Schedule = {
   id: Scalars['Int']['output'];
 };
 
+export type ScheduleInput = {
+  date: Scalars['String']['input'];
+  groupId: Scalars['Int']['input'];
+};
+
 export type Set = {
   __typename?: 'Set';
   id: Scalars['String']['output'];
   reps: Scalars['Int']['output'];
   setNum: Scalars['Int']['output'];
   weight: Scalars['Float']['output'];
+};
+
+export type SetInput = {
+  id: Scalars['String']['input'];
+  reps: Scalars['Int']['input'];
+  setNum: Scalars['Int']['input'];
+  weight: Scalars['Float']['input'];
+};
+
+export type UpdateScheduleInput = {
+  groupId: Scalars['Int']['input'];
+  id: Scalars['Int']['input'];
 };
 
 export type User = {
@@ -176,9 +270,13 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  AddWorkoutInput: AddWorkoutInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  DeletedExercise: ResolverTypeWrapper<DeletedExercise>;
+  DeletedWorkout: ResolverTypeWrapper<DeletedWorkout>;
   Exercise: ResolverTypeWrapper<Exercise>;
   ExerciseData: ExerciseData;
+  ExerciseDataOptional: ExerciseDataOptional;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Group: ResolverTypeWrapper<Group>;
   GroupName: ResolverTypeWrapper<GroupName>;
@@ -186,17 +284,24 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Schedule: ResolverTypeWrapper<Schedule>;
+  ScheduleInput: ScheduleInput;
   Set: ResolverTypeWrapper<Set>;
+  SetInput: SetInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  UpdateScheduleInput: UpdateScheduleInput;
   User: ResolverTypeWrapper<User>;
   Workout: ResolverTypeWrapper<Workout>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  AddWorkoutInput: AddWorkoutInput;
   Boolean: Scalars['Boolean']['output'];
+  DeletedExercise: DeletedExercise;
+  DeletedWorkout: DeletedWorkout;
   Exercise: Exercise;
   ExerciseData: ExerciseData;
+  ExerciseDataOptional: ExerciseDataOptional;
   Float: Scalars['Float']['output'];
   Group: Group;
   GroupName: GroupName;
@@ -204,10 +309,29 @@ export type ResolversParentTypes = {
   Mutation: {};
   Query: {};
   Schedule: Schedule;
+  ScheduleInput: ScheduleInput;
   Set: Set;
+  SetInput: SetInput;
   String: Scalars['String']['output'];
+  UpdateScheduleInput: UpdateScheduleInput;
   User: User;
   Workout: Workout;
+};
+
+export type DeletedExerciseResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeletedExercise'] = ResolversParentTypes['DeletedExercise']> = {
+  groupId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type DeletedWorkoutResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeletedWorkout'] = ResolversParentTypes['DeletedWorkout']> = {
+  date?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  exerciseId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  sets?: Resolver<Array<ResolversTypes['Set']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ExerciseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Exercise'] = ResolversParentTypes['Exercise']> = {
@@ -231,6 +355,14 @@ export type GroupNameResolvers<ContextType = any, ParentType extends ResolversPa
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addExercise?: Resolver<Maybe<ResolversTypes['Exercise']>, ParentType, ContextType, Partial<MutationAddExerciseArgs>>;
+  addGroup?: Resolver<Maybe<ResolversTypes['Group']>, ParentType, ContextType, RequireFields<MutationAddGroupArgs, 'name'>>;
+  addScheduleDay?: Resolver<Maybe<ResolversTypes['Schedule']>, ParentType, ContextType, Partial<MutationAddScheduleDayArgs>>;
+  addWorkout?: Resolver<Maybe<ResolversTypes['Workout']>, ParentType, ContextType, RequireFields<MutationAddWorkoutArgs, 'workoutData'>>;
+  deleteExercise?: Resolver<Maybe<ResolversTypes['DeletedExercise']>, ParentType, ContextType, RequireFields<MutationDeleteExerciseArgs, 'id'>>;
+  deleteGroup?: Resolver<Maybe<ResolversTypes['Group']>, ParentType, ContextType, RequireFields<MutationDeleteGroupArgs, 'name'>>;
+  deleteWorkout?: Resolver<Maybe<ResolversTypes['DeletedWorkout']>, ParentType, ContextType, RequireFields<MutationDeleteWorkoutArgs, 'id'>>;
+  updateExercise?: Resolver<Maybe<ResolversTypes['Exercise']>, ParentType, ContextType, Partial<MutationUpdateExerciseArgs>>;
+  updateScheduleDay?: Resolver<Maybe<ResolversTypes['Schedule']>, ParentType, ContextType, Partial<MutationUpdateScheduleDayArgs>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -277,6 +409,8 @@ export type WorkoutResolvers<ContextType = any, ParentType extends ResolversPare
 };
 
 export type Resolvers<ContextType = any> = {
+  DeletedExercise?: DeletedExerciseResolvers<ContextType>;
+  DeletedWorkout?: DeletedWorkoutResolvers<ContextType>;
   Exercise?: ExerciseResolvers<ContextType>;
   Group?: GroupResolvers<ContextType>;
   GroupName?: GroupNameResolvers<ContextType>;

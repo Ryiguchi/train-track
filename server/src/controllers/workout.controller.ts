@@ -17,5 +17,20 @@ export async function getWorkouts(
     },
   });
 
-  return workoutsResults as unknown as IWorkoutFormatted[];
+  return workoutsResults as unknown as IWorkoutQueryResult[];
+}
+
+export async function addWorkout(data: IAddWorkoutInput) {
+  const addedWorkout = await prisma.workout.create({
+    data,
+    include: { exercise: true },
+  });
+
+  return addedWorkout as unknown as IWorkoutQueryResult;
+}
+
+export async function deleteWorkout(id: number) {
+  const deletedWorkout = await prisma.workout.delete({ where: { id } });
+
+  return deletedWorkout as unknown as IDeletedWorkoutResult;
 }

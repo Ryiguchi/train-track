@@ -34,7 +34,7 @@ model Exercise {
   name    String    @unique
   slug    String    @unique
   groupId Int?
-  group   Group?    @relation(fields: [groupId], references: [id])
+  group   Group?    @relation(fields: [groupId], references: [id], onDelete: SetNull)
   Workout Workout[]
 
   @@map("exercise")
@@ -50,23 +50,23 @@ model Group {
 }
 
 model Schedule {
-  id      Int    @id @default(autoincrement())
+  id      Int      @id @default(autoincrement())
   date    DateTime
-  groupId Int
-  group   Group? @relation(fields: [groupId], references: [id])
+  groupId Int?
+  group   Group?   @relation(fields: [groupId], references: [id], onDelete: SetNull)
 
-@@unique([date, groupId])
-  @@map("schedule")
+  @@unique([date, groupId])
   @@index([date])
+  @@map("schedule")
 }
 
 model Workout {
-  id         Int       @id @default(autoincrement())
-  date       DateTime  @db.Date  
+  id         Int      @id @default(autoincrement())
+  date       DateTime @db.Date
   sets       Json[]
   exerciseId Int
-  exercise   Exercise? @relation(fields: [exerciseId], references: [id])
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
 
-  @@map("workout")
   @@index([exerciseId, date])
+  @@map("workout")
 }

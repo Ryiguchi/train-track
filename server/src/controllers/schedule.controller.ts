@@ -15,3 +15,21 @@ export async function getSchedule() {
 
   return schedule as unknown as IScheduleFormatted[];
 }
+
+export async function addScheduleDay(data: IScheduleInput) {
+  const newScheduleDay = await prisma.schedule.create({
+    data,
+    include: { group: true },
+  });
+  return newScheduleDay as unknown as IScheduleFormatted;
+}
+
+export async function upadteScheduleDay(fieldsToUpdate: IScheduleUpdateInput) {
+  const updatedSchedule = await prisma.schedule.update({
+    where: { id: fieldsToUpdate.id },
+    data: fieldsToUpdate,
+    include: { group: true },
+  });
+
+  return updatedSchedule as unknown as IScheduleFormatted;
+}

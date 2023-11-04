@@ -8,6 +8,6 @@ type User {
   exercises: [String]!
 }
 
-#  type Query {
+# type Query {
 #   user(id: Int!): User
 # }

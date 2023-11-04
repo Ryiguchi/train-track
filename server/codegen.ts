@@ -9,6 +9,7 @@ const config: CodegenConfig = {
     },
   },
   watch: true,
+  errorsOnly: true,
 };
 
 export default config;

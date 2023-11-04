@@ -6,3 +6,8 @@ type Group {
 type Query {
   groups: [Group]
 }
+
+type Mutation {
+  addGroup(name: String!): Group
+  deleteGroup(name: String!): Group
+}

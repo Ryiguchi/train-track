@@ -7,3 +7,18 @@ type Schedule {
 type Query {
   schedule: [Schedule]!
 }
+
+input ScheduleInput {
+  date: String!
+  groupId: Int!
+}
+
+input UpdateScheduleInput {
+  id: Int!
+  groupId: Int!
+}
+
+type Mutation {
+  addScheduleDay(scheduleData: ScheduleInput): Schedule
+  updateScheduleDay(fieldsToUpdate: UpdateScheduleInput): Schedule
+}
