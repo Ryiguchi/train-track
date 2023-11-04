@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LoginForm from '@/components/login/LoginForm.vue';
+import SigninForm from './SigninForm.vue';
 
 function handleSubmit(formData: ILoginFormData) {
   console.log(formData);
@@ -8,7 +8,7 @@ function handleSubmit(formData: ILoginFormData) {
 
 <template>
   <main>
-    <LoginForm @submit="handleSubmit" />
+    <SigninForm @submit="handleSubmit" />
   </main>
 </template>
 

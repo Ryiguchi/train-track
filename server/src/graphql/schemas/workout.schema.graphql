@@ -1,0 +1,19 @@
+type Set {
+  id: String!
+  setNum: Int!
+  weight: Float!
+  reps: Int!
+}
+
+type Workout {
+  id: Int!
+  date: String!
+  sets: [Set!]!
+  exercise: String!
+}
+
+type Query {
+  workouts: [Workout]
+  workoutsByDate(date: String!): [Workout]
+  workoutsByExercise(exercise: String!): [Workout]
+}

@@ -7,15 +7,20 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false"
+    "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
+    "codegen": "graphql-codegen"
   },
   "dependencies": {
+    "@urql/vue": "^1.1.2",
+    "graphql": "^16.8.1",
     "pinia": "^2.1.7",
     "uniqid": "^5.4.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
     "@tsconfig/node18": "^18.2.2",
     "@types/node": "^18.18.5",
     "@types/uniqid": "^5.3.3",

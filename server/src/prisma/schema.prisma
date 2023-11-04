@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// prisma db pull - to turn your database schema into a Prisma schema.
+// prisma generate -to generate the Prisma Client. You can then start querying your database.
+// npx prisma migrate dev --name init - migrates your model and creates a migration
+// prisma migrate dev - can run when update model
+// prisma generate - can run when update model
+// --skip-seed - add to prisma migrate to skip seeding
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String   @db.VarChar(25)
+  email     String   @unique
+  password  String   @db.VarChar(255)
+  exercises String[]
+
+  @@map("user")
+}
+
+model Exercise {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  slug    String    @unique
+  groupId Int?
+  group   Group?    @relation(fields: [groupId], references: [id])
+  Workout Workout[]
+
+  @@map("exercise")
+}
+
+model Group {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  Exercise Exercise[]
+  Schedule Schedule[]
+
+  @@map("group")
+}
+
+model Schedule {
+  id      Int    @id @default(autoincrement())
+  date    DateTime
+  groupId Int
+  group   Group? @relation(fields: [groupId], references: [id])
+
+@@unique([date, groupId])
+  @@map("schedule")
+  @@index([date])
+}
+
+model Workout {
+  id         Int       @id @default(autoincrement())
+  date       DateTime  @db.Date  
+  sets       Json[]
+  exerciseId Int
+  exercise   Exercise? @relation(fields: [exerciseId], references: [id])
+
+  @@map("workout")
+  @@index([exerciseId, date])
+}

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import WorkoutFormSet from './WorkoutFormSet.vue';
+import WorkoutFormSet from '../../components/workout/WorkoutFormSet.vue';
 
 import { storeToRefs } from 'pinia';
 import { useWorkoutStore } from '@/stores/workout.store';
 import { computed } from 'vue';
-import WorkoutHeader from './WorkoutHeader.vue';
-import WorkoutHeading from './WorkoutHeading.vue';
+import WorkoutHeader from '@/components/workout/WorkoutHeader.vue';
+import WorkoutHeading from '@/components/workout/WorkoutHeading.vue';
 
 const workoutStore = useWorkoutStore();
 

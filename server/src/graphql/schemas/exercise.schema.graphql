@@ -1,0 +1,24 @@
+type GroupName {
+  name: String!
+}
+
+type Exercise {
+  id: Int!
+  name: String!
+  slug: String!
+  group: String!
+}
+
+type Query {
+  exercises: [Exercise!]!
+}
+
+input ExerciseData {
+  name: String!
+  slug: String!
+  groupId: Int
+}
+
+type Mutation {
+  addExercise(userData: ExerciseData): Exercise
+}

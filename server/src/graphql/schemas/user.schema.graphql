@@ -1,0 +1,13 @@
+type User {
+  id: Int!
+  createdAt: String!
+  updatedAt: String!
+  name: String!
+  email: String!
+  password: String!
+  exercises: [String]!
+}
+
+#  type Query {
+#   user(id: Int!): User
+# }

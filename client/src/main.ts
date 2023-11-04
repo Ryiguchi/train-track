@@ -1,7 +1,8 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import urql, { cacheExchange, fetchExchange } from '@urql/vue';
 
-import App from './App.vue';
+import Root from './App.vue';
 import router from './router';
 
 import BaseTitle from '@/components/base/BaseTitle.vue';
@@ -10,9 +11,14 @@ import BaseModal from './components/base/BaseModal.vue';
 import BaseRadioButtons from './components/base/BaseRadioButtons.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import BaseInput from '@/components/base/BaseInput.vue';
+import { graphQlUrl } from './helpers/api.helpers';
 
-const app = createApp(App);
+const app = createApp(Root);
 
+app.use(urql, {
+  url: graphQlUrl,
+  exchanges: [cacheExchange, fetchExchange],
+});
 app.use(createPinia());
 app.use(router);
 

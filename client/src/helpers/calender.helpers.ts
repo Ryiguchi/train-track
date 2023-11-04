@@ -1,6 +1,6 @@
 /**
  *
- * @param dayNum: number // the day of the week as a number - 0 & Sunday based
+ * @param dayNum: number // the day of the week as a number - 0 & Sunday basedLoginForm
  * @returns: number // the day of the week as a number - 1 & Monday based
  */
 export const convertDayOfWeek = (dayNum: number) => {
