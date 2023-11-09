@@ -3,7 +3,7 @@ const { color } = defineProps({
   color: {
     type: String,
     required: false,
-    default: 'ghost',
+    default: 'blue',
   },
 });
 </script>
@@ -22,11 +22,14 @@ h1
   text-align: center
   @include text-h1
 
-  &.primary
+  &.orange
     background-color: $c1-lt
 
-  &.secondary
+  &.blue
     background-color: $c2-lt
+
+  &.green
+    background-color: $c3
 
   &.ghost
     background: transparent

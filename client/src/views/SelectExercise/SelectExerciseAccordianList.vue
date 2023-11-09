@@ -1,15 +1,11 @@
 <script setup lang="ts">
+import type { Exercise } from '@/lib/graphQL/gql/graphql';
 import { type PropType } from 'vue';
 
 const { items } = defineProps({
   items: {
-    type: Array as PropType<string[]>,
+    type: Array as PropType<Exercise[]>,
     required: true,
-  },
-  color: {
-    type: String,
-    required: false,
-    default: 'primary',
   },
 });
 
@@ -17,15 +13,19 @@ const emits = defineEmits<{
   selectItem: [item: string];
 }>();
 
-function handleSelectItem(item: string) {
-  emits('selectItem', item);
+function handleSelectItem(slug: string) {
+  emits('selectItem', slug);
 }
 </script>
 
 <template>
-  <ul :class="color">
-    <li v-for="item in items" :key="item" @click="handleSelectItem(item)">
-      {{ item }}
+  <ul :class="items[0].group.color">
+    <li
+      v-for="item in items"
+      :key="item.id"
+      @click="handleSelectItem(item.slug)"
+    >
+      {{ item.name }}
     </li>
   </ul>
 </template>
@@ -41,10 +41,13 @@ ul
   padding: 0 $sp_2
   border-radius: 0  0 $br_md $br_md
 
-  &.primary
+  &.orange
     background-color: $c1-lt
-  &.secondary
+  &.blue
     background-color: $c2-lt
+
+  &.green
+    background-color: $c3
 
   li
     height: 5rem

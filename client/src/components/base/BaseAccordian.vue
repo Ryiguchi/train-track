@@ -43,12 +43,18 @@ function handleToggleIsOpen() {
       <IconCaretDown v-else />
     </div>
   </div>
-  <div v-if="isOpen">
-    <slot></slot>
+  <div class="accordian-wrapper">
+    <Transition name="accordian-list">
+      <div v-if="isOpen">
+        <slot></slot>
+      </div>
+    </Transition>
   </div>
 </template>
 
 <style scoped lang="sass">
+.accordian-wrapper
+  overflow: hidden
 .title-bar
   display: flex
   align-items: center
@@ -62,16 +68,31 @@ function handleToggleIsOpen() {
     @include text-dt
 
 .open
-  &.primary
+  &.orange
     border: 1px solid $c1-lt
     border-bottom: none
     h2
       color: $c1-lt
-  &.secondary
+  &.blue
     border: 1px solid $c2-lt
     border-bottom: none
     h2
       color: $c2-lt
 
+  &.green
+    border: 1px solid $c3
+    border-bottom: none
+    h2
+      color: $c3
+
   border-radius: 10px 10px 0 0
+
+.accordian-list-enter-from,
+.accordian-list-leave-to
+  transform: translateY(-100%)
+.accordian-list-enter-to,
+.accordian-list-leave-from
+  transform: translateY(0)
+.accordian-list-enter-active
+  transition: all .3s
 </style>

@@ -1,17 +1,18 @@
-import { getWorkouts } from '@/helpers/dummy-data/dummy-workouts';
 import { defineStore } from 'pinia';
-import { useCalenderStore } from './calender.store';
+import type { Workout } from '@/lib/graphQL/gql/graphql';
 
 export const useSavedWorkoutsStore = defineStore('savedWorkouts', {
   state() {
     return {
-      workouts: getWorkouts(
-        useCalenderStore().schedule.map(event => event.date)
-      ) as IWorkout[],
+      workouts: [] as Workout[],
     };
   },
 
   actions: {
+    setWorkouts(workouts: Workout[]) {
+      this.workouts = workouts;
+    },
+
     filterWorkoutsByMonth(date: string) {
       return this.workouts.filter(workout => workout.date.startsWith(date));
     },
@@ -24,7 +25,7 @@ export const useSavedWorkoutsStore = defineStore('savedWorkouts', {
 
     getWorkoutByDateAndExercise(date: string, exercise: string) {
       return this.workouts.find(
-        workout => workout.date === date && workout.exercise.name === exercise
+        workout => workout.date === date && workout.exercise === exercise
       );
     },
   },

@@ -6,14 +6,15 @@ type Exercise {
   id: Int!
   name: String!
   slug: String!
-  group: String!
+  group: Group!
 }
 
 type Query {
-  exercises: [Exercise!]!
+  exercisesByUserId(userId: Int!): [Exercise!]!
 }
 
 input ExerciseData {
+  userId: Int!
   name: String!
   slug: String!
   groupId: Int
@@ -30,11 +31,12 @@ type DeletedExercise {
   id: Int!
   name: String!
   slug: String!
-  groupId: Int!
+  groupId: Int
+  userId: Int
 }
 
 type Mutation {
-  addExercise(userData: ExerciseData): Exercise
-  updateExercise(fieldsToUpdate: ExerciseDataOptional): Exercise
+  addExercise(exerciseData: ExerciseData!): Exercise
+  updateExercise(fieldsToUpdate: ExerciseDataOptional!): Exercise
   deleteExercise(id: Int!): DeletedExercise
 }

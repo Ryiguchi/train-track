@@ -1,29 +1,38 @@
 <script setup lang="ts">
 import WorkoutDayList from './WorkoutDayList.vue';
 
-import { convertDateToCalenderFormat } from '@/helpers/calender.helpers';
+import { convertDateToCalenderFormat } from '@/utils/helpers/calender.helpers';
 import { useRoute } from 'vue-router';
-import { useSavedWorkoutsStore } from '@/stores/savedWorkouts.store';
 import { computed } from 'vue';
-('');
+import { useWorkoutsQuery } from '@/utils/composables/queries/useWorkoutsQuery';
+import { useSavedWorkoutsStore } from '@/stores/savedWorkouts.store';
+import BaseTitle from '@/components/base/BaseTitle.vue';
 
-const route = useRoute();
-const { date } = route.params;
+// QUERY
+useWorkoutsQuery();
 
+// STORE
+const { getWorkoutsByDate } = useSavedWorkoutsStore();
+
+// COMPOSABLES
+const { date } = useRoute().params;
+
+// REFS
 const dateISO = computed(() => (Array.isArray(date) ? date[0] : date));
 
 const formattedDate = computed(() => {
   return convertDateToCalenderFormat(dateISO.value);
 });
 
-const { getWorkoutsByDate } = useSavedWorkoutsStore();
-const workouts = computed(() => getWorkoutsByDate(dateISO.value));
+const workoutsByDate = computed(() => {
+  return getWorkoutsByDate(dateISO.value);
+});
 </script>
 
 <template>
   <main>
-    <base-title>{{ formattedDate }}</base-title>
-    <WorkoutDayList :workouts="workouts" />
+    <BaseTitle>{{ formattedDate }}</BaseTitle>
+    <WorkoutDayList :workouts="workoutsByDate" />
   </main>
 </template>
 
@@ -35,3 +44,4 @@ main
   gap: $sp_6
   margin-top: $sp_8
 </style>
+@/lib/helpers/calender.helpers @/config/gql/graphql

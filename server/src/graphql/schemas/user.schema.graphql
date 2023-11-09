@@ -4,8 +4,8 @@ type User {
   updatedAt: String!
   name: String!
   email: String!
-  password: String!
-  exercises: [String]!
+  password: String
+  googleId: String
 }
 
 # type Query {

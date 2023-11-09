@@ -1,13 +1,11 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
-const graphQlUrl = `${process.env.VUE_APP_BASE_URL}/graphql`;
-
 const config: CodegenConfig = {
-  schema: graphQlUrl,
-  documents: ['src/**/*.vue'],
+  schema: 'http://localhost:3000/graphql',
+  documents: ['src/**/*.vue', 'src/lib/graphQL/queries.ts'],
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {
-    './src/gql/': {
+    './src/lib/graphQL/gql/': {
       preset: 'client',
       config: {
         useTypeImports: true,

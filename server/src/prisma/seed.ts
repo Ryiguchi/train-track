@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import {
   dummyExercises,
   dummyGroups,
+  dummyUser,
   getSchedule,
   getWorkouts,
 } from './dummy-data/dummy-data';
@@ -9,6 +10,8 @@ import {
 const prisma = new PrismaClient();
 
 async function main() {
+  // const user = await prisma.user.create({ data: dummyUser });
+
   const groups = await prisma.group.createMany({
     data: dummyGroups,
     skipDuplicates: true,
@@ -19,7 +22,7 @@ async function main() {
     skipDuplicates: true,
   });
 
-  await prisma.schedule.deleteMany();
+  // await prisma.schedule.deleteMany();
 
   const schedules = await prisma.schedule.createMany({
     data: getSchedule(),
@@ -36,7 +39,9 @@ async function main() {
 
   console.log(groups);
   console.log(exercises);
+  console.log(schedules);
   console.log(workouts);
+  // console.log(user);
 }
 
 main()

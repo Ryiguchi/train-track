@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
-import WorkoutHeading from '../workout/WorkoutHeading.vue';
 import WorkoutTableSet from '../workout/WorkoutTableSet.vue';
+import type { Set } from '@/lib/graphQL/gql/graphql';
 
-const { workout } = defineProps({
-  workout: {
-    type: Array as PropType<IWorkoutSetData[]>,
+// PROPS
+const { sets } = defineProps({
+  sets: {
+    type: Array as PropType<Set[]>,
     required: true,
   },
   color: {
@@ -19,7 +20,7 @@ const { workout } = defineProps({
 <template>
   <ul>
     <WorkoutTableSet
-      v-for="set in workout"
+      v-for="set in sets"
       :set="set"
       :key="set.id"
       :color="color"
@@ -35,3 +36,4 @@ ul
   list-style: none
   @include text-sm
 </style>
+@/config/gql/graphql

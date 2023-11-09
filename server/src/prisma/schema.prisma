@@ -18,14 +18,19 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String   @db.VarChar(25)
-  email     String   @unique
-  password  String   @db.VarChar(255)
-  exercises String[]
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  name      String?    @db.VarChar(25)
+  email     String?    @unique
+  password  String?    @db.VarChar(255)
+  googleId  String?    @unique
+  Exercise  Exercise[]
+  Group     Group[]
+  Schedule  Schedule[]
+  Workout   Workout[]
 
+  @@index([email, googleId])
   @@map("user")
 }
 
@@ -35,17 +40,24 @@ model Exercise {
   slug    String    @unique
   groupId Int?
   group   Group?    @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  userId  Int?
+  user    User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
   Workout Workout[]
 
+  @@index([userId])
   @@map("exercise")
 }
 
 model Group {
   id       Int        @id @default(autoincrement())
   name     String     @unique
+  color  String
+  userId   Int?
+  user     User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
   Exercise Exercise[]
   Schedule Schedule[]
 
+  @@index([userId])
   @@map("group")
 }
 
@@ -54,19 +66,23 @@ model Schedule {
   date    DateTime
   groupId Int?
   group   Group?   @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  userId  Int?
+  user    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@unique([date, groupId])
-  @@index([date])
+  @@index([date, userId])
   @@map("schedule")
 }
 
 model Workout {
   id         Int      @id @default(autoincrement())
-  date       DateTime @db.Date
+  date       DateTime 
   sets       Json[]
   exerciseId Int
   exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  userId     Int?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  @@index([exerciseId, date])
+  @@index([exerciseId, date, userId])
   @@map("workout")
 }

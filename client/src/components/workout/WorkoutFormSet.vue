@@ -2,13 +2,11 @@
 import IconAdd from '../icons/IconAdd.vue';
 import IconEdit from '../icons/IconEdit.vue';
 
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useWorkoutStore } from '@/stores/workout.store';
 import { storeToRefs } from 'pinia';
-import uniqid from 'uniqid';
 
-const workoutStore = useWorkoutStore();
-
+// PROPS
 const { set, isNew, weight, reps } = defineProps<{
   set: number;
   isNew?: boolean;
@@ -16,17 +14,34 @@ const { set, isNew, weight, reps } = defineProps<{
   reps?: number;
 }>();
 
-const { setsLength } = storeToRefs(workoutStore);
-const { addSet, updateSet } = workoutStore;
+// EMITS
+const emits = defineEmits<{
+  hasUnsavedValues: [boolean];
+}>();
 
+// STORE
+const { setsLength } = storeToRefs(useWorkoutStore());
+const { addSet, updateSet } = useWorkoutStore();
+
+// REFS
 const isEditing = ref(isNew ? true : false);
 const enteredWeight = ref<number | null>(null);
 const enteredReps = ref<number | null>(null);
 
-const setNumber = computed(() => {
-  return `Set ${isNew ? setsLength.value + 1 : set}:`;
+const setNum = computed(() => {
+  return isNew ? setsLength.value + 1 : set;
 });
 
+// WATCH
+watch([enteredReps, enteredWeight], ([newReps, newWeight]) => {
+  if ((!newReps || newReps === 0) && (!newWeight || newWeight === 0)) {
+    emits('hasUnsavedValues', false);
+  } else {
+    emits('hasUnsavedValues', true);
+  }
+});
+
+// FUNCTIONS
 function handleAddSet() {
   if (!enteredWeight.value || !enteredReps.value) {
     // message
@@ -34,8 +49,8 @@ function handleAddSet() {
   }
 
   const setData: IWorkoutSetData = {
-    id: uniqid(),
-    setNum: set,
+    id: Date.now().toString(),
+    setNum: setNum.value,
     weight: enteredWeight.value,
     reps: enteredReps.value,
   };
@@ -64,7 +79,7 @@ function handleSelectOnFocus(event: Event) {
 
 <template>
   <li>
-    <span>{{ setNumber }}</span>
+    <span>Set {{ setNum }}:</span>
     <div>
       <input
         type="number"

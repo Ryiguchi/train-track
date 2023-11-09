@@ -1,41 +1,57 @@
 <script setup lang="ts">
 import BaseCalender from '@/components/base/BaseCalender.vue';
 import ModalDisplayWorkout from '@/components/modals/ModalDisplayWorkout.vue';
-import { useExerciseStore } from '@/stores/exercises.store';
+import { useExercises } from '@/utils/composables/useExercises';
 import { useCalenderStore } from '@/stores/calender.store';
 import { useSavedWorkoutsStore } from '@/stores/savedWorkouts.store';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
-import { convertDateToCalenderFormat } from '@/helpers/calender.helpers';
+import { convertDateToCalenderFormat } from '@/utils/helpers/calender.helpers';
+import type { Workout } from '@/lib/graphQL/gql/graphql';
+import { useWorkoutsQuery } from '@/utils/composables/queries/useWorkoutsQuery';
+import BaseTitle from '@/components/base/BaseTitle.vue';
 
-const { changeMonth, getCalenderDaysArray } = useCalenderStore();
-const { displayedDate } = storeToRefs(useCalenderStore());
-
-const { getNameFromSlug } = useExerciseStore();
-const { getWorkoutByDateAndExercise } = useSavedWorkoutsStore();
-
-const { name } = defineProps({
-  name: {
+// PROPS
+const { slug } = defineProps({
+  slug: {
     type: String,
     required: true,
   },
 });
 
+// QUERY
+useWorkoutsQuery();
+
+// STORE
+const { changeMonth, getCalenderDaysArray } = useCalenderStore();
+const { displayedDate } = storeToRefs(useCalenderStore());
+const { getWorkoutByDateAndExercise } = useSavedWorkoutsStore();
+
+// HOOKS
+
+const { getExerciseFromSlug } = useExercises();
+
+// REFS
+
 const isModalOpen = ref(false);
 const modalDate = ref<string | null>(null);
-const modalWorkout = ref<IWorkout | null>(null);
+const modalWorkout = ref<Workout | null>(null);
 const formattedDate = computed(() => {
   return modalDate.value ? convertDateToCalenderFormat(modalDate.value) : '';
 });
 
-const title = getNameFromSlug(name);
+// VARIABLES
+const exercise = getExerciseFromSlug(slug);
+const { name } = exercise;
+const { color } = exercise.group;
+const legend = [{ name, color }];
 
-const legend = [{ name, color: 'blue' }];
+// FUNCTIONS
 
 function handleClickDay(date: string) {
-  if (!title) return;
+  if (!name) return;
 
-  const workout = getWorkoutByDateAndExercise(date, title);
+  const workout = getWorkoutByDateAndExercise(date, name);
 
   if (!workout) return;
 
@@ -50,23 +66,31 @@ function closeModal() {
 </script>
 
 <template>
-  <base-modal v-if="isModalOpen" @overlay="closeModal">
-    <ModalDisplayWorkout
-      :date="formattedDate"
-      :workout="modalWorkout"
-      @close="closeModal"
-    />
-  </base-modal>
-  <main>
-    <base-title>{{ title }}</base-title>
-    <BaseCalender
-      :days="getCalenderDaysArray(title)"
-      :legend="legend"
-      :displayedDate="displayedDate"
-      :changeMonthFn="changeMonth"
-      :onClickFn="handleClickDay"
-    />
-  </main>
+  <div>
+    <Teleport to="body">
+      <Transition name="modal">
+        <base-modal v-if="isModalOpen" @overlay="closeModal">
+          <ModalDisplayWorkout
+            :color="color"
+            :date="formattedDate"
+            :workout="modalWorkout"
+            @close="closeModal"
+          />
+        </base-modal>
+      </Transition>
+    </Teleport>
+    <main>
+      <BaseTitle :color="color">{{ name }}</BaseTitle>
+      <BaseCalender
+        :color="color"
+        :days="getCalenderDaysArray(name)"
+        :legend="legend"
+        :displayedDate="displayedDate"
+        :changeMonthFn="changeMonth"
+        :onClickFn="handleClickDay"
+      />
+    </main>
+  </div>
 </template>
 
 <style scoped lang="sass">

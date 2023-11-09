@@ -1,6 +1,18 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "**/*.ts"],
+  "include": [
+    "src/lib/types/env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "**/*.ts",
+    "src/lib/types/global.d.ts",
+    "src/lib/types/user.d.ts",
+    "src/lib/types/toast.d.ts",
+    "src/lib/types/exercise.d.ts",
+    "src/lib/types/queries.d.ts",
+    "src/lib/types/errors.d.ts",
+    "src/lib/types/axios.d.ts"
+  ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,

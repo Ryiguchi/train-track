@@ -12,14 +12,19 @@ const { displayedDate, changeMonthFn } = defineProps({
     type: Function as PropType<TChangeMonthFn>,
     required: true,
   },
+  color: {
+    type: String,
+    required: false,
+    default: 'blue',
+  },
 });
 </script>
 
 <template>
   <div class="wrapper">
-    <IconCaretLeft @click="changeMonthFn('back')" />
-    <h1>{{ displayedDate }}</h1>
-    <IconCaretRight @click="changeMonthFn('forward')" />
+    <IconCaretLeft :color="color" @click="changeMonthFn('back')" />
+    <h1 :class="color">{{ displayedDate }}</h1>
+    <IconCaretRight :color="color" @click="changeMonthFn('forward')" />
   </div>
 </template>
 
@@ -32,5 +37,13 @@ const { displayedDate, changeMonthFn } = defineProps({
 
   h1
     @include text-calender-header
-    color: $c2-lt
+
+    &.orange
+      color: $c1-lt
+
+    &.blue
+      color: $c2-lt
+
+    &.green
+      color: $c3
 </style>

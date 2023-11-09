@@ -38,6 +38,11 @@ button
     border: 1px solid $c-lt
     color: $c-lt
 
+  &.ghost-dark
+    background-color: rgba(0,0,0,.1)
+    border: 1px solid $c-dk
+    color: $c-dk
+
   &.button-sm
     width: fit-content
     min-width: 21rem

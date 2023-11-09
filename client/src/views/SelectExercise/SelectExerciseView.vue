@@ -4,28 +4,27 @@ import SelectExerciseAccordian from './SelectExerciseAccordian.vue';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useExerciseStore } from '@/stores/exercises.store';
-import { useCalenderStore } from '@/stores/calender.store';
 import { useModalsStore } from '@/stores/modals.store';
+import { useUserStore } from '@/stores/user.store';
 import { storeToRefs } from 'pinia';
+import { useExercisesQuery } from '@/utils/composables/queries/useExerciseQuery';
 
+// STORE
+const { openAddExerciseModal, openSetDailyGroupModal } = useModalsStore();
+const { userId } = storeToRefs(useUserStore());
+
+// QUERY
+const { exerciseNames, isTodaysGroupSet } = useExercisesQuery();
+
+// COMPOSABLES
 const router = useRouter();
 
-const exerciseStore = useExerciseStore();
-const { exerciseNames } = storeToRefs(exerciseStore);
-const { getSlugFromName } = exerciseStore;
+const openList = ref<string | null>(null);
 
-const { isTodaysGroupSet } = storeToRefs(useCalenderStore());
-
-const { openAddExerciseModal, openSetDailyGroupModal } = useModalsStore();
-
-function goToExercise(exerciseName: string) {
-  const slug = getSlugFromName(exerciseName);
-  if (!slug) return;
-
+// FUNCTIONS
+function goToExercise(slug: string) {
   router.push(`/exercises/${slug}`);
 }
-const openList = ref<string | null>(null);
 
 function handleFocused() {
   openList.value = null;

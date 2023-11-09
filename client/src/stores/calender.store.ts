@@ -4,23 +4,17 @@ import {
   getDaysInMonth,
   getFullISODate,
   getPrevMonthLastDayNum,
-} from '@/helpers/calender.helpers';
-import { getSchedule } from '@/helpers/dummy-data/dummy-schedule';
+} from '@/utils/helpers/calender.helpers';
 import { defineStore } from 'pinia';
-import uniqid from 'uniqid';
 import { useSavedWorkoutsStore } from './savedWorkouts.store';
-
-const legendItems = [
-  { name: 'push', color: 'blue' },
-  { name: 'pull', color: 'green' },
-  { name: 'legs', color: 'orange' },
-];
+import { type Group, type Schedule } from '@/lib/graphQL/gql/graphql';
+import { useExercisesQuery } from '@/utils/composables/queries/useExerciseQuery';
 
 export const useCalenderStore = defineStore('calender', {
   state() {
     return {
-      schedule: getSchedule(),
-      legendItems,
+      schedule: [] as Schedule[],
+      legendItems: [] as Group[],
       displayedDate: new Date().toLocaleString('default', {
         month: 'long',
         year: 'numeric',
@@ -64,12 +58,21 @@ export const useCalenderStore = defineStore('calender', {
 
     isTodaysGroupSet(state): boolean {
       const today = new Date().toISOString().slice(0, 10);
+
       return this.schedule.some(day => day.date === today);
     },
   },
 
   actions: {
-    addSchedule(scheduleData: ISchedule) {
+    setSchedule(schedule: Schedule[]) {
+      this.schedule = schedule;
+    },
+
+    setLegend(items: Group[]) {
+      this.legendItems = items;
+    },
+
+    addSchedule(scheduleData: Schedule) {
       this.schedule.push(scheduleData);
     },
 
@@ -78,6 +81,11 @@ export const useCalenderStore = defineStore('calender', {
     },
 
     getCalenderDaysArray(exercise: string | null = null): ICalenderDay[] {
+      const exerciseColor = exercise
+        ? useExercisesQuery().exercises.value.find(ex => ex.name === exercise)
+            ?.group.color
+        : undefined;
+
       const { prevDayNum, prevWeekdayNum } = getPrevMonthLastDayNum(
         this.displayedDate
       );
@@ -98,15 +106,13 @@ export const useCalenderStore = defineStore('calender', {
             )?.color;
           } else {
             color = useSavedWorkoutsStore().workouts.find(
-              workout =>
-                workout.exercise.name === exercise && workout.date === date
+              workout => workout.exercise === exercise && workout.date === date
             )
-              ? 'blue'
+              ? exerciseColor
               : undefined;
           }
 
           const daysData = {
-            id: uniqid(),
             date,
             currentMonth: false,
             dayNum: i,
@@ -128,15 +134,13 @@ export const useCalenderStore = defineStore('calender', {
           )?.color;
         } else {
           color = useSavedWorkoutsStore().workouts.find(
-            workout =>
-              workout.exercise.name === exercise && workout.date === date
+            workout => workout.exercise === exercise && workout.date === date
           )
-            ? 'blue'
+            ? exerciseColor
             : undefined;
         }
 
         const daysData = {
-          id: uniqid(),
           date,
           currentMonth: true,
           dayNum: i,
@@ -157,15 +161,13 @@ export const useCalenderStore = defineStore('calender', {
           )?.color;
         } else {
           color = useSavedWorkoutsStore().workouts.find(
-            workout =>
-              workout.exercise.name === exercise && workout.date === date
+            workout => workout.exercise === exercise && workout.date === date
           )
-            ? 'blue'
+            ? exerciseColor
             : undefined;
         }
 
         const daysData = {
-          id: uniqid(),
           date,
           currentMonth: false,
           dayNum: i,

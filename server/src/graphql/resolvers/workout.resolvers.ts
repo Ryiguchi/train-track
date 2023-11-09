@@ -1,6 +1,7 @@
 import {
   addWorkout,
   deleteWorkout,
+  getPreviousWorkout,
   getWorkouts,
 } from '../../controllers/workout.controller';
 import { Resolvers } from '../../types/resolvers-types';
@@ -14,23 +15,25 @@ export const workoutResolvers: Resolvers = {
     },
   },
   Query: {
-    workouts: async () => await getWorkouts(),
+    workoutsByUserId: async (parent, args) =>
+      await getWorkouts({ userId: args.userId }),
 
-    workoutsByDate: async (parent, args, context, info) => {
-      const dateInIsoFormat = new Date(args.date).toISOString();
+    previousWorkout: async (parent, args) =>
+      await getPreviousWorkout(args.exerciseId),
 
-      return await getWorkouts({ date: dateInIsoFormat });
-    },
+    // workoutsByDate: async (parent, args, context, info) => {
+    //   const dateInIsoFormat = new Date(args.date).toISOString();
 
-    workoutsByExercise: async (parent, args) =>
-      await getWorkouts({ exercise: { name: args.exercise } }),
+    //   return await getWorkouts({ date: dateInIsoFormat });
+    // },
+
+    // workoutsByExercise: async (parent, args) =>
+    //   await getWorkouts({ exercise: { name: args.exercise } }),
   },
 
   Mutation: {
-    addWorkout: async (parent, args) =>
-      await addWorkout(args.workoutData as IAddWorkoutInput),
+    addWorkout: async (parent, args) => await addWorkout(args.workoutData),
 
-    deleteWorkout: async (parent, args) =>
-      await deleteWorkout(args.id as number),
+    deleteWorkout: async (parent, args) => await deleteWorkout(args.id),
   },
 };

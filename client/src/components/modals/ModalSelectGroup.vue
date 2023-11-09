@@ -1,21 +1,48 @@
 <script setup lang="ts">
-import { useCalenderStore } from '@/stores/calender.store';
+import { useMutation } from '@urql/vue';
+
 import { useModalsStore } from '@/stores/modals.store';
-import uniqid from 'uniqid';
+import { useUserStore } from '@/stores/user.store';
+import { useToastStore } from '@/stores/toast.store';
 
-const { addSchedule } = useCalenderStore();
+import { useExercisesQuery } from '@/utils/composables/queries/useExerciseQuery';
+import { useGroups } from '@/utils/composables/useGroups';
+
+import { SET_TODAYS_GROUP } from '@/lib/graphQL/queries';
+import { todaysGroupDataValidator } from '@/lib/types/zod';
+import {
+  setTodaysGroupSuccessToast,
+  setTodaysGroupFailedToast,
+} from '@/utils/helpers/toasts.helpers';
+
+// STORE
 const { closeSetDailyGroupModal } = useModalsStore();
+const { userId } = useUserStore();
+const { showToast } = useToastStore();
 
-const options = ['push', 'pull', 'legs'];
+// QUERY
+const { groupNames } = useExercisesQuery();
+const { executeMutation: setTodaysGroup } = useMutation(SET_TODAYS_GROUP);
 
+// COMPOSABLES
+const { getIdFromName } = useGroups();
+
+// FUNCTIONS
 function handleSubmit(option: string) {
   const scheduleData = {
-    id: uniqid(),
-    group: option,
-    date: new Date().toISOString().slice(0, 10),
+    userId,
+    groupId: getIdFromName(option),
+    date: new Date().toISOString(),
   };
-  addSchedule(scheduleData);
-  closeSetDailyGroupModal();
+
+  try {
+    const validScheduleData = todaysGroupDataValidator.parse(scheduleData);
+    setTodaysGroup({ scheduleData: validScheduleData });
+    closeSetDailyGroupModal();
+    showToast(setTodaysGroupSuccessToast);
+  } catch (error) {
+    showToast(setTodaysGroupFailedToast(error));
+  }
 }
 
 function handleCancel() {
@@ -25,7 +52,7 @@ function handleCancel() {
 
 <template>
   <base-radio-buttons
-    :options="options"
+    :options="groupNames"
     @submit="handleSubmit"
     @cancel="handleCancel"
   >

@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import BaseAccordian from '@/components/base/BaseAccordian.vue';
 import BaseWorkoutTable from '@/components/base/BaseWorkoutTable.vue';
-import { ref, type PropType } from 'vue';
+import { type Workout } from '@/lib/graphQL/gql/graphql';
+import { ref, type PropType, toRefs } from 'vue';
 
-const {} = defineProps({
+const props = defineProps({
   workouts: {
-    type: Array as PropType<IWorkout[]>,
+    type: Array as PropType<Workout[]>,
+    required: true,
   },
 });
 
-const openList = ref<string | null>(null);
+const { workouts } = toRefs(props);
 
-function handleToggleList(id: string) {
+const openList = ref<number | null>(null);
+
+function handleToggleList(id: number) {
   openList.value = openList.value === id ? null : id;
 }
 </script>
@@ -23,14 +27,14 @@ function handleToggleList(id: string) {
     </div>
     <BaseAccordian
       v-else
-      v-for="(exercise, i) in workouts"
-      :title="exercise.exercise.name"
+      v-for="exercise in workouts"
+      :title="exercise.exercise"
       :isOpen="exercise.id === openList"
-      color="secondary"
+      color="blue"
       @toggleIsOpen="handleToggleList(exercise.id)"
     >
       <div class="table">
-        <BaseWorkoutTable :workout="exercise.sets" />
+        <BaseWorkoutTable :sets="exercise.sets" />
       </div>
     </BaseAccordian>
   </section>
@@ -53,3 +57,4 @@ section
       @include text-sm
       text-align: center
 </style>
+@/config/gql/graphql

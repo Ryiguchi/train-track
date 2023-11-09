@@ -109,8 +109,8 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "files": [
     "src/types/global.d.ts",
-    "src/types/exercise.d.ts",
-    "src/types/schedule.d.ts",
-    "src/types/workout.d.ts"
+    "src/types/data.d.ts",
+    "src/types/express.d.ts",
+    "src/types/user.d.ts"
   ]
 }

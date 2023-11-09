@@ -8,8 +8,4 @@ declare global {
   type TFieldWithName = {
     name: string;
   };
-  interface IGroupDBResult {
-    id: number;
-    name: string;
-  }
 }

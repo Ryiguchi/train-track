@@ -11,6 +11,11 @@ const { type, name, color } = defineProps({
     type: String,
     required: true,
   },
+  inputId: {
+    type: String,
+    required: false,
+    default: '',
+  },
   color: {
     type: String,
     required: false,
@@ -47,6 +52,7 @@ function handleOnBlur() {
       :type="type"
       :name="name"
       :class="color"
+      :id="inputId"
       v-model.trim="enteredValue"
       @focus="handleOnFocus"
       @blur="handleOnBlur"

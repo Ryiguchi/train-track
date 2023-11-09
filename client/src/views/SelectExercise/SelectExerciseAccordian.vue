@@ -4,8 +4,10 @@ import SelectExerciseAccordianList from './SelectExerciseAccordianList.vue';
 
 import { capitalize, toRefs } from 'vue';
 
-import { useExerciseStore } from '@/stores/exercises.store';
+import { useExercisesQuery } from '@/utils/composables/queries/useExerciseQuery';
+import { useExercises } from '@/utils/composables/useExercises';
 
+// PROPS
 const props = defineProps<{
   handleSelectExercise: (exerciseName: string) => void;
   SetOpenList: (value: string | null) => void;
@@ -14,8 +16,11 @@ const props = defineProps<{
 
 const { SetOpenList, handleSelectExercise, openList } = toRefs(props);
 
-const { groups, filterByGroup } = useExerciseStore();
+// COMPOSABLES
+const { groups } = useExercisesQuery();
+const { filterByGroup } = useExercises();
 
+// FUNCTIONS
 function handleToggle(group: string) {
   if (openList.value === group) {
     SetOpenList.value(null);
@@ -29,18 +34,18 @@ function handleToggle(group: string) {
   <section>
     <BaseAccordian
       v-for="group in groups"
-      :title="capitalize(group)"
-      :isOpen="openList === group"
-      @toggleIsOpen="handleToggle(group)"
-      color="secondary"
+      :title="capitalize(group.name)"
+      :isOpen="openList === group.name"
+      @toggleIsOpen="handleToggle(group.name)"
+      :color="group.color"
+      :key="group.id"
     >
       <SelectExerciseAccordianList
-        :items="filterByGroup(group)"
+        :items="filterByGroup(group.name)"
         @selectItem="handleSelectExercise"
-        color="secondary"
       />
     </BaseAccordian>
   </section>
 </template>
 
-<style scoped></style>
+<style scoped lang="sass"></style>

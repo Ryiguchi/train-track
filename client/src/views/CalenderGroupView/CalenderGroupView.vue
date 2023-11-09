@@ -2,17 +2,24 @@
 import BaseCalender from '@/components/base/BaseCalender.vue';
 import { useCalenderStore } from '@/stores/calender.store';
 import { useModalsStore } from '@/stores/modals.store';
+import { useExercisesQuery } from '@/utils/composables/queries/useExerciseQuery';
+import { useScheduleQuery } from '@/utils/composables/queries/useScheduleQuery';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 
-const router = useRouter();
-const { displayedDate, legendItems, isTodaysGroupSet } = storeToRefs(
-  useCalenderStore()
-);
+// STORE
+const { displayedDate } = storeToRefs(useCalenderStore());
+const { changeMonth, getCalenderDaysArray } = useCalenderStore();
 const { openSetDailyGroupModal } = useModalsStore();
 
-const { changeMonth, getCalenderDaysArray } = useCalenderStore();
+// QUERY
+useScheduleQuery();
+const { isTodaysGroupSet, groups } = useExercisesQuery();
 
+// COMPOSABLES
+const router = useRouter();
+
+//FUNCTIONS
 function handleClickDay(date: string) {
   router.push(`/workout/${date}`);
 }
@@ -24,7 +31,7 @@ function handleClickDay(date: string) {
       :displayedDate="displayedDate"
       :changeMonthFn="changeMonth"
       :days="getCalenderDaysArray()"
-      :legend="legendItems"
+      :legend="groups"
       :onClickFn="handleClickDay"
     />
     <base-button v-if="!isTodaysGroupSet" @click="openSetDailyGroupModal()"

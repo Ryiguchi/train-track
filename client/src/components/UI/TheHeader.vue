@@ -7,38 +7,53 @@ import IconHome from '../icons/IconHome.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { computed, ref } from 'vue';
 
-import { useModalsStore } from '@/stores/modals.store';
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/stores/user.store';
+
+import { useHeaderButton, useShowIcons } from '@/utils/composables/useHeader';
+import { useAxios } from '@/utils/composables/useAxios';
+
+// USER STORE
+const { isSignedIn } = storeToRefs(useUserStore());
+const { setUser } = useUserStore();
 
 // ROUTER
 const router = useRouter();
 const route = ref(useRoute());
 
+// COMPOSABLES
+const { axios, pending, success, error } = useAxios();
+
+const {
+  showIconLeftArrow,
+  showIconCalender,
+  showIconCalenderSearch,
+  showIconHome,
+} = useShowIcons(route);
+
+const { buttonColor, buttonText } = useHeaderButton(isSignedIn);
+
 const calenderExercisePath = computed(() => {
-  return `/calender/${route.value.params ? route.value.params.id : ''}`;
+  return `/calender/${route.value.params ? route.value.params.slug : ''}`;
 });
 
-const showIconLeftArrow = computed(() => {
-  return route.value.name !== 'select' && route.value.name !== 'signin';
-});
-
-const showIconPlus = computed(() => {
-  return route.value.name === 'select';
-});
-
-const showIconCalender = computed(() => {
-  return (
-    route.value.name !== 'signin' &&
-    route.value.name !== 'calenderMonth' &&
-    route.value.name !== 'exercise'
-  );
-});
-
-const showIconCalenderSearch = computed(() => {
-  return route.value.name === 'exercise';
-});
-
+// FUNCTIONS
 function goBack() {
   router.go(-1);
+}
+
+async function handleOnClick() {
+  const url = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/signout`;
+  await axios(url);
+
+  if (success.value) {
+    setUser(null);
+    router.replace('/signin');
+  }
+
+  if (error.value) {
+    console.log(error);
+  }
 }
 </script>
 
@@ -53,9 +68,12 @@ function goBack() {
         <RouterLink :to="calenderExercisePath" v-if="showIconCalenderSearch">
           <IconCalenderSearch />
         </RouterLink>
-        <RouterLink to="/">
+        <RouterLink to="/" v-if="showIconHome">
           <IconHome />
         </RouterLink>
+        <base-button v-if="isSignedIn" color="ghost" @click="handleOnClick"
+          >sign out</base-button
+        >
       </nav>
     </div>
   </header>
@@ -82,3 +100,4 @@ header
     align-content: center
     gap: $sp_2
 </style>
+@/lib/composables/header.composables@/lib/composables/axios.composables

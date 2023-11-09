@@ -1,11 +1,21 @@
 <script setup lang="ts">
-import { preview } from 'vite';
+import BaseButton from '@/components/base/BaseButton.vue';
+import BaseInput from '@/components/base/BaseInput.vue';
+import { isZodError } from '@/lib/types/predicates';
+import { credentialsValidator } from '@/lib/types/zod';
+import { useToastStore } from '@/stores/toast.store';
+import { signInFailedToast } from '@/utils/helpers/toasts.helpers';
 import { capitalize, computed, ref } from 'vue';
 
+// EMITS
 const emits = defineEmits<{
   submit: [formData: ILoginFormData];
 }>();
 
+// STORE
+const { showToast } = useToastStore();
+
+// REFS
 const mode = ref('signin');
 const enteredEmail = ref('');
 const enteredPassword = ref('');
@@ -16,6 +26,14 @@ const switchText = computed(() => {
     : 'Already have an account?';
 });
 
+const switchMode = computed(() => {
+  return mode.value === 'signin' ? 'signup' : 'signin';
+});
+
+// VARIABLES
+const googleUrl = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/google`;
+
+// FUNCTIONS
 function toggleMode() {
   mode.value = mode.value === 'signin' ? 'signup' : 'signin';
 }
@@ -35,42 +53,60 @@ function handleSubmit() {
     mode: mode.value,
   };
 
-  emits('submit', formData);
+  try {
+    const validatedCredentials = credentialsValidator.parse(formData);
+    emits('submit', validatedCredentials);
+  } catch (error: any) {
+    showToast(signInFailedToast(error));
+    if (isZodError(error) && error.errors[0].path[0] === 'password') {
+      console.log('PASSWORD ERROR');
+
+      document.getElementById('password-input')?.focus();
+    } else if (isZodError(error) && error.errors[0].path[0] === 'email') {
+      console.log('EMAIL ERROR');
+
+      document.getElementById('email-input')?.focus();
+    }
+  }
 }
 </script>
 
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="input-wrapper">
-      <base-input
+      <BaseInput
         class="email-input"
         name="email"
+        inputId="email-input"
         type="email"
         color="light"
         @change-value="handleChangeEmail"
-        >Email</base-input
+        >Email</BaseInput
       >
-      <base-input
+      <BaseInput
         class="password-input"
         name="password"
+        inputId="password-input"
         type="password"
         color="light"
         @change-value="handleChangePassword"
-        >Password</base-input
+        >Password</BaseInput
       >
       <div class="forgot-container">
         <button type="button" class="text-buttons">Forgot Password?</button>
       </div>
     </div>
     <div class="button-wrapper">
-      <base-button>{{ mode }}</base-button>
-      <base-button type="button" color="secondary"
-        >{{ mode }} with google</base-button
-      >
+      <BaseButton>{{ mode }}</BaseButton>
+      <a :href="googleUrl">
+        <BaseButton type="button" color="secondary"
+          >{{ mode }} with google
+        </BaseButton>
+      </a>
     </div>
     <button type="button" class="text-buttons" @click="toggleMode">
       <span> {{ switchText + ' ' }} </span>
-      <span> {{ capitalize(mode) }} </span>
+      <span> {{ capitalize(switchMode) }} </span>
     </button>
   </form>
 </template>

@@ -1,16 +1,18 @@
 type Schedule {
   id: Int!
   date: String!
-  group: String
+  group: Group!
 }
 
 type Query {
-  schedule: [Schedule]!
+  scheduleByUserId(userId: Int!): [Schedule!]
+  isTodaysGroupSet: Boolean
 }
 
 input ScheduleInput {
   date: String!
   groupId: Int!
+  userId: Int!
 }
 
 input UpdateScheduleInput {
@@ -19,6 +21,6 @@ input UpdateScheduleInput {
 }
 
 type Mutation {
-  addScheduleDay(scheduleData: ScheduleInput): Schedule
-  updateScheduleDay(fieldsToUpdate: UpdateScheduleInput): Schedule
+  addScheduleDay(scheduleData: ScheduleInput!): Schedule
+  updateScheduleDay(fieldsToUpdate: UpdateScheduleInput!): Schedule
 }

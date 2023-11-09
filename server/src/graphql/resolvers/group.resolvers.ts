@@ -2,16 +2,17 @@ import { Resolvers } from '../../types/resolvers-types';
 import {
   addGroup,
   deleteGroup,
-  getGroups,
+  getGroupsByUserId,
 } from '../../controllers/group.controller';
 
 export const groupResolvers: Resolvers = {
   Query: {
-    groups: async () => await getGroups(),
+    groupsByUserId: async (parent, args) =>
+      await getGroupsByUserId(args.userId),
   },
 
   Mutation: {
-    addGroup: async (parent, args) => await addGroup(args.name),
+    addGroup: async (parent, args) => await addGroup(args.name, args.color),
 
     deleteGroup: async (parent, args) => await deleteGroup(args.name),
   },

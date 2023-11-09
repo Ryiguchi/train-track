@@ -40,15 +40,15 @@ li
     &.reps
       margin-left: $sp_6
 
-  &.dark
-    color: $c-dk
+  &.green
+    color: $c3
 
-  &.primary
+  &.orange
     color: $c1-lt
 
-  &.secondary
+  &.blue
     color: $c2-lt
 
-  &.light
-    color: $c-lt
+  &.dark
+    color: $c-dk
 </style>

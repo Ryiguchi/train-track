@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { type PropType, ref, computed } from 'vue';
+import { type PropType, ref, computed, toRefs } from 'vue';
 import IconSearch from '@/components/icons/IconSearch.vue';
 
+// EMIT
 const emit = defineEmits<{
   'selected-item': [item: string];
   focused: [];
 }>();
 
-const { items } = defineProps({
+// PROPS
+const props = defineProps({
   items: {
     type: Array as PropType<string[]>,
     required: true,
@@ -20,16 +22,20 @@ const { items } = defineProps({
   },
 });
 
+// REFS
+const { items } = toRefs(props);
+
 const searchTerm = ref('');
 const isFocused = ref(false);
 
 const filteredItems = computed(() => {
   if (searchTerm.value === '') return [];
-  return items.filter(item =>
+  return items.value.filter(item =>
     item.toLowerCase().includes(searchTerm.value.toLowerCase())
   );
 });
 
+// FUNCTIONS
 function selectItem(item: string) {
   emit('selected-item', item);
 }

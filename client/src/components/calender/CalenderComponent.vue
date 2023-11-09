@@ -3,14 +3,13 @@ import { capitalize, type PropType } from 'vue';
 
 const daysOfWeek = ['M', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su'];
 
-const { days, legend } = defineProps({
+const { days } = defineProps({
   days: {
     type: Array as PropType<ICalenderDay[]>,
     required: true,
   },
   legend: {
-    type: Array as PropType<ICalenderLegendItem[]>,
-    required: true,
+    type: Array as PropType<{ name: string; color: string }[]>,
   },
   onClickFn: {
     type: Function as PropType<(date: string) => void>,
@@ -39,7 +38,7 @@ function isToday(date: string) {
       :class="[getClasses(day), { today: isToday(day.date) }]"
       class="calender-day"
       @click="onClickFn(day.date)"
-      :key="day.id"
+      :key="day.date"
     >
       <span>
         {{ day.dayNum }}

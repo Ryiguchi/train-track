@@ -27,14 +27,19 @@ header
 
   h2
     @include text-md("bold")
-.dark header
-  color: $c-dk
-  border-bottom:  1px solid $c-dk
-.primary header
+.orange header
   color: $c1-lt
   border-bottom:  1px solid $c1-lt
 
-.secondary header
+.blue header
   color: $c2-lt
   border-bottom:  1px solid $c2-lt
+
+.green header
+  color: $c3
+  border-bottom:  1px solid $c3
+
+.dark header
+  color: $c-dk
+  border-bottom:  1px solid $c-dk
 </style>
