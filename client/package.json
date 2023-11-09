@@ -28,6 +28,7 @@
     "@types/uniqid": "^5.3.3",
     "@vitejs/plugin-vue": "^4.4.0",
     "@vue/tsconfig": "^0.4.0",
+    "concurrently": "^8.2.2",
     "npm-run-all2": "^6.1.1",
     "sass": "^1.69.4",
     "typescript": "~5.2.0",
