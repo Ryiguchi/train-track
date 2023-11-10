@@ -4,18 +4,25 @@ services:
     image: postgres:16-alpine
     restart: always
     environment:
-      - POSTGRES_USER=ryan
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=train_track
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=train-track
+      - POSTGRES_PASSWORD=traintrack
+
     ports:
       - '5432:5432'
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-q', '-d', 'train-track', '-U', 'postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   server:
     image: rymela/train-track-server
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     ports:
       - '3000:3000'
     environment:
@@ -23,14 +30,16 @@ services:
       - BASE_URL_DEV=http://localhost
       - PORT=3000
       - CLIENT_URL_DEV=http://localhost:5173
-      - DATABASE_URL="postgresql://ryan:traintrack@localhost:5432/    train-track?schema=public"
-      - OAUTH_CLIENT_ID=334883725483-ps9mkg4ei8a4ee862taq4oebhrsdip8r.apps.googleusercontent.com
-      - OAUTH_CLIENT_SECRET=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
-      - SESSION_SECRET=we_will_never_stop_no_matter_what_you_do
-    command: npm run migrate && npm run seed && npm run dev
+    command: npm run compose
 
   client:
     image: rymela/train-track-client
+    environment:
+      - VITE_BASE_URL=http://localhost:5173
+      - VITE_SERVER_BASE_URL=http://localhost:3000
     ports:
       - '5173:5173'
     network_mode: host
+
+volumes:
+  postgres-data:

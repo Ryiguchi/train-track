@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 import {
   dummyExercises,
   dummyGroups,
-  dummyUser,
   getSchedule,
   getWorkouts,
 } from './dummy-data/dummy-data';
@@ -10,7 +9,15 @@ import {
 const prisma = new PrismaClient();
 
 async function main() {
-  // const user = await prisma.user.create({ data: dummyUser });
+  const user = await prisma.user.create({
+    data: {
+      name: 'test-user',
+      email: 'test@test.com',
+      password: '$2a$12$RXxrrEVD2h.RibBujeQyDeQmZoNVnmiaT5JMQ0Lc/T4CLOTysro5e',
+    },
+  });
+
+  // test-user password = Password1
 
   const groups = await prisma.group.createMany({
     data: dummyGroups,
