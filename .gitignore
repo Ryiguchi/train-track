@@ -1,4 +1,4 @@
 */.env.*
 .env*
 *.secret.txt
-*/node_modules
+*node_modules
