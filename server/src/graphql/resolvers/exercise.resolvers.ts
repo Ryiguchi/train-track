@@ -8,17 +8,21 @@ import {
 
 export const exerciseResolvers: Resolvers = {
   Query: {
-    exercisesByUserId: async (parent, args) =>
-      await getexercisesByUserId(args.userId),
+    exercisesByUserId: async (parent, args, { req }) =>
+      await getexercisesByUserId(req.userId),
   },
 
   Mutation: {
-    addExercise: async (parent, args) => await addExercise(args.exerciseData),
+    addExercise: async (parent, args, { req }) =>
+      await addExercise(args.exerciseData, req.userId),
 
-    updateExercise: async (parent, args) =>
-      await updateExercise(args.fieldsToUpdate as IExerciseUpdateInput),
+    updateExercise: async (parent, args, { req }) =>
+      await updateExercise(
+        args.fieldsToUpdate as IExerciseUpdateInput,
+        req.userId
+      ),
 
-    deleteExercise: async (parent, args) =>
-      await deleteExercise(args.id as number),
+    deleteExercise: async (parent, args, { req }) =>
+      await deleteExercise(args.id as number, req.userId),
   },
 };

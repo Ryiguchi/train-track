@@ -33,16 +33,18 @@ async function handleSubmit(formData: ILoginFormData) {
     password: formData.password,
   };
 
-  try {
-    const user = await axios(url, credentials);
+  const user = await axios(url, credentials);
 
+  if (error.value) {
+    showToast(signInFailedToast(error.value));
+  }
+
+  if (success.value) {
     setUser(user);
 
     showToast(signInSuccessToast);
 
     router.replace('/exercises');
-  } catch (error: any) {
-    showToast(signInFailedToast(error));
   }
 }
 </script>

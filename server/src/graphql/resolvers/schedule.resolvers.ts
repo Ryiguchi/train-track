@@ -12,17 +12,18 @@ export const scheduleResolvers: Resolvers = {
   },
 
   Query: {
-    scheduleByUserId: async (parent, args) =>
-      await getScheduleByUserId(args.userId),
+    scheduleByUserId: async (parent, args, { req }) =>
+      await getScheduleByUserId(req.userId),
 
-    isTodaysGroupSet: async () => await checkIsTodaysGroupSet(),
+    isTodaysGroupSet: async (parent, args, { req }) =>
+      await checkIsTodaysGroupSet(req.userId),
   },
 
   Mutation: {
-    addScheduleDay: async (parent, args) =>
-      await addScheduleDay(args.scheduleData),
+    addScheduleDay: async (parent, args, { req }) =>
+      await addScheduleDay(args.scheduleData, req.userId),
 
-    updateScheduleDay: async (parent, args) =>
-      await upadteScheduleDay(args.fieldsToUpdate),
+    updateScheduleDay: async (parent, args, { req }) =>
+      await upadteScheduleDay(args.fieldsToUpdate, req.userId),
   },
 };

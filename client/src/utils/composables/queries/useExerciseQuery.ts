@@ -1,17 +1,13 @@
 import { useQuery } from '@urql/vue';
-import { useUserStore } from '@/stores/user.store';
-import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { EXERCISES_AND_GROUPS_QUERY } from '@/lib/graphQL/queries';
 import { useCalenderStore } from '@/stores/calender.store';
 
 export function useExercisesQuery(): TExerciseReturn {
-  const { userId } = storeToRefs(useUserStore());
   const { setLegend } = useCalenderStore();
 
   const { data, error, fetching, executeQuery } = useQuery({
     query: EXERCISES_AND_GROUPS_QUERY,
-    variables: { userId: userId.value! },
   });
 
   const exercises = computed(() => {
@@ -33,7 +29,7 @@ export function useExercisesQuery(): TExerciseReturn {
       return [];
     } else {
       setLegend(data.value.groups);
-      return data.value.groups;
+      return data.value.groups as IGroupWithEnum[];
     }
   });
 

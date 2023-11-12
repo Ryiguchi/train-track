@@ -81,3 +81,21 @@ export const addWorkoutSuccessToast = successToast(
 export function addWorkoutFailedToast(error: any) {
   return failedToast(extractErrorMessage(error));
 }
+
+// ADD GROUP
+export const addGroupSuccessToast = successToast(
+  'Your group has been successfully added/updated!'
+);
+
+export function addGroupFailedToast(error: any) {
+  return failedToast(extractErrorMessage(error));
+}
+
+// DELETE GROUP
+export const deleteGroupSuccessToast = successToast(
+  'Your group has been successfully deleted!'
+);
+
+export function deleteGroupFailedToast(error: any) {
+  return failedToast(extractErrorMessage(error));
+}

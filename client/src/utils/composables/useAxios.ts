@@ -14,8 +14,7 @@ export function useAxios() {
     success.value = null;
 
     try {
-      const response = await ax.post(url, body);
-      console.log(response);
+      const response = await ax.post(url, body, { withCredentials: true });
 
       if (isAxiosFailedResponse(response)) {
         throw new Error(response.data.error);

@@ -15,25 +15,18 @@ export const workoutResolvers: Resolvers = {
     },
   },
   Query: {
-    workoutsByUserId: async (parent, args) =>
-      await getWorkouts({ userId: args.userId }),
+    workoutsByUserId: async (parent, args, { req }) =>
+      await getWorkouts(req.userId),
 
-    previousWorkout: async (parent, args) =>
-      await getPreviousWorkout(args.exerciseId),
-
-    // workoutsByDate: async (parent, args, context, info) => {
-    //   const dateInIsoFormat = new Date(args.date).toISOString();
-
-    //   return await getWorkouts({ date: dateInIsoFormat });
-    // },
-
-    // workoutsByExercise: async (parent, args) =>
-    //   await getWorkouts({ exercise: { name: args.exercise } }),
+    previousWorkout: async (parent, args, { req }) =>
+      await getPreviousWorkout(args.exerciseId, req.userId),
   },
 
   Mutation: {
-    addWorkout: async (parent, args) => await addWorkout(args.workoutData),
+    addWorkout: async (parent, args, { req }) =>
+      await addWorkout(args.workoutData, req.userId),
 
-    deleteWorkout: async (parent, args) => await deleteWorkout(args.id),
+    deleteWorkout: async (parent, args, { req }) =>
+      await deleteWorkout(args.id, req.userId),
   },
 };

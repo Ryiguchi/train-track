@@ -10,11 +10,10 @@ type Exercise {
 }
 
 type Query {
-  exercisesByUserId(userId: Int!): [Exercise!]!
+  exercisesByUserId: [Exercise!]!
 }
 
 input ExerciseData {
-  userId: Int!
   name: String!
   slug: String!
   groupId: Int
@@ -32,7 +31,6 @@ type DeletedExercise {
   name: String!
   slug: String!
   groupId: Int
-  userId: Int
 }
 
 type Mutation {

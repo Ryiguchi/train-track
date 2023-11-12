@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 
-const { type, name, color } = defineProps({
+const { type, name, color, value } = defineProps({
   type: {
     type: String,
     required: false,
@@ -21,13 +21,18 @@ const { type, name, color } = defineProps({
     required: false,
     default: 'dark',
   },
+  value: {
+    type: String,
+    required: false,
+    default: '',
+  },
 });
 
 const emits = defineEmits<{
   changeValue: [value: string];
 }>();
 
-const enteredValue = ref('');
+const enteredValue = ref(value);
 const hasFocus = ref(false);
 
 watch(enteredValue, newValue => {
@@ -44,7 +49,7 @@ function handleOnBlur() {
 </script>
 
 <template>
-  <div class="input-wrapper">
+  <div class="input-wrapper" @click="handleOnFocus">
     <label :for="name" :class="{ above: enteredValue !== '' || hasFocus }">
       <slot></slot>
     </label>
@@ -63,6 +68,7 @@ function handleOnBlur() {
 <style scoped lang="sass">
 .input-wrapper
   position: relative
+  width: 100%
 
   label
     position: absolute
@@ -81,7 +87,7 @@ function handleOnBlur() {
 
   input
     border: 1px solid $c-lt
-    border-radius: $br_sm
+    border-radius: $br_md
     height: 4rem
     width: 100%
     max-width: 50rem
@@ -94,6 +100,10 @@ function handleOnBlur() {
 
     &.light
       background-color: $c-dk
+
+    &.ghost
+      background-color: transparent
+      border: 1px solid $c1
 
     &:focus
       outline: 1px solid $c1

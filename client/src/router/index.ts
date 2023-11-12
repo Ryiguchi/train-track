@@ -14,6 +14,7 @@ import {
   signInSuccessToast,
 } from '@/utils/helpers/toasts.helpers';
 import StatisticsView from '@/views/StatisticsView/StatisticsView.vue';
+import SettingsGroupView from '@/views/SettingsGroup/SettingsGroupView.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -65,6 +66,11 @@ const router = createRouter({
       name: 'calenderDay',
       component: WorkoutDayView,
       props: true,
+    },
+    {
+      path: '/settings/group',
+      name: 'group',
+      component: SettingsGroupView,
     },
 
     {

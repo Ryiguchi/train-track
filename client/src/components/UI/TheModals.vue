@@ -14,7 +14,6 @@ const someModalIsOpen = computed(() => {
   return isSetDailyGroupModalOpen.value || isAddExerciseModalOpen.value;
 });
 </script>
-
 <template>
   <div v-if="someModalIsOpen" class="overlay" @click="closeAllModals"></div>
 
@@ -39,5 +38,5 @@ const someModalIsOpen = computed(() => {
   height: 100vh
   background-color: rgba(0, 0, 0, .1)
   z-index: 50
-  backdrop-filter:  blur(2px)
+  backdrop-filter:  blur(2px) brightness(50%)
 </style>

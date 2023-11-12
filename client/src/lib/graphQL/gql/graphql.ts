@@ -16,11 +16,15 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type AddGroupInput = {
+  color: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+};
+
 export type AddWorkoutInput = {
   date: Scalars['String']['input'];
   exerciseId: Scalars['Int']['input'];
   sets: Array<SetInput>;
-  userId: Scalars['Int']['input'];
 };
 
 export type DeletedExercise = {
@@ -29,7 +33,6 @@ export type DeletedExercise = {
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   slug: Scalars['String']['output'];
-  userId?: Maybe<Scalars['Int']['output']>;
 };
 
 export type DeletedWorkout = {
@@ -53,7 +56,6 @@ export type ExerciseData = {
   groupId?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
   slug: Scalars['String']['input'];
-  userId: Scalars['Int']['input'];
 };
 
 export type ExerciseDataOptional = {
@@ -78,13 +80,14 @@ export type GroupName = {
 export type Mutation = {
   __typename?: 'Mutation';
   addExercise?: Maybe<Exercise>;
-  addGroup?: Maybe<Group>;
+  addGroup: Group;
   addScheduleDay?: Maybe<Schedule>;
   addWorkout?: Maybe<Workout>;
   deleteExercise?: Maybe<DeletedExercise>;
-  deleteGroup?: Maybe<Group>;
+  deleteGroup: Group;
   deleteWorkout?: Maybe<DeletedWorkout>;
   updateExercise?: Maybe<Exercise>;
+  updateGroup: Group;
   updateScheduleDay?: Maybe<Schedule>;
 };
 
@@ -95,8 +98,7 @@ export type MutationAddExerciseArgs = {
 
 
 export type MutationAddGroupArgs = {
-  color: Scalars['String']['input'];
-  name: Scalars['String']['input'];
+  addGroupData: AddGroupInput;
 };
 
 
@@ -116,7 +118,7 @@ export type MutationDeleteExerciseArgs = {
 
 
 export type MutationDeleteGroupArgs = {
-  name: Scalars['String']['input'];
+  id: Scalars['Int']['input'];
 };
 
 
@@ -127,6 +129,11 @@ export type MutationDeleteWorkoutArgs = {
 
 export type MutationUpdateExerciseArgs = {
   fieldsToUpdate: ExerciseDataOptional;
+};
+
+
+export type MutationUpdateGroupArgs = {
+  updateGroupData: UpdateGroupInput;
 };
 
 
@@ -145,28 +152,8 @@ export type Query = {
 };
 
 
-export type QueryExercisesByUserIdArgs = {
-  userId: Scalars['Int']['input'];
-};
-
-
-export type QueryGroupsByUserIdArgs = {
-  userId: Scalars['Int']['input'];
-};
-
-
 export type QueryPreviousWorkoutArgs = {
   exerciseId: Scalars['Int']['input'];
-};
-
-
-export type QueryScheduleByUserIdArgs = {
-  userId: Scalars['Int']['input'];
-};
-
-
-export type QueryWorkoutsByUserIdArgs = {
-  userId: Scalars['Int']['input'];
 };
 
 export type Schedule = {
@@ -179,7 +166,6 @@ export type Schedule = {
 export type ScheduleInput = {
   date: Scalars['String']['input'];
   groupId: Scalars['Int']['input'];
-  userId: Scalars['Int']['input'];
 };
 
 export type Set = {
@@ -195,6 +181,12 @@ export type SetInput = {
   reps: Scalars['Int']['input'];
   setNum: Scalars['Int']['input'];
   weight: Scalars['Float']['input'];
+};
+
+export type UpdateGroupInput = {
+  color: Scalars['String']['input'];
+  id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
 };
 
 export type UpdateScheduleInput = {
@@ -221,9 +213,7 @@ export type Workout = {
   sets: Array<Set>;
 };
 
-export type ExercisesAndGroupsQueryVariables = Exact<{
-  userId: Scalars['Int']['input'];
-}>;
+export type ExercisesAndGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ExercisesAndGroupsQuery = { __typename?: 'Query', isTodaysGroupSet?: boolean | null, exercises: Array<{ __typename?: 'Exercise', id: number, name: string, slug: string, group: { __typename?: 'Group', name: string, color: string, id: number } }>, groups?: Array<{ __typename?: 'Group', id: number, name: string, color: string }> | null };
@@ -235,16 +225,12 @@ export type PreviousWorkoutQueryVariables = Exact<{
 
 export type PreviousWorkoutQuery = { __typename?: 'Query', previousWorkout?: { __typename?: 'Workout', id: number, date: string, exercise: string, sets: Array<{ __typename?: 'Set', id: string, setNum: number, weight: number, reps: number }> } | null };
 
-export type WorkoutsQueryVariables = Exact<{
-  userId: Scalars['Int']['input'];
-}>;
+export type WorkoutsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type WorkoutsQuery = { __typename?: 'Query', workouts?: Array<{ __typename?: 'Workout', id: number, date: string, exercise: string, sets: Array<{ __typename?: 'Set', id: string, setNum: number, weight: number, reps: number }> }> | null };
 
-export type ScheduleQueryVariables = Exact<{
-  userId: Scalars['Int']['input'];
-}>;
+export type ScheduleQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ScheduleQuery = { __typename?: 'Query', schedule?: Array<{ __typename?: 'Schedule', id: number, date: string, group: { __typename?: 'Group', name: string, color: string, id: number } }> | null };
@@ -270,11 +256,35 @@ export type AddWorkoutMutationVariables = Exact<{
 
 export type AddWorkoutMutation = { __typename?: 'Mutation', addWorkout?: { __typename?: 'Workout', id: number, date: string, exercise: string, sets: Array<{ __typename?: 'Set', id: string, setNum: number, weight: number, reps: number }> } | null };
 
+export type AddGroupMutationVariables = Exact<{
+  addGroupData: AddGroupInput;
+}>;
 
-export const ExercisesAndGroupsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ExercisesAndGroups"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"exercises"},"name":{"kind":"Name","value":"exercisesByUserId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"group"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"groups"},"name":{"kind":"Name","value":"groupsByUserId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}},{"kind":"Field","name":{"kind":"Name","value":"isTodaysGroupSet"}}]}}]} as unknown as DocumentNode<ExercisesAndGroupsQuery, ExercisesAndGroupsQueryVariables>;
+
+export type AddGroupMutation = { __typename?: 'Mutation', addGroup: { __typename?: 'Group', id: number, name: string, color: string } };
+
+export type UpdateGroupMutationVariables = Exact<{
+  updateGroupData: UpdateGroupInput;
+}>;
+
+
+export type UpdateGroupMutation = { __typename?: 'Mutation', updateGroup: { __typename?: 'Group', id: number, name: string, color: string } };
+
+export type DeleteGroupMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type DeleteGroupMutation = { __typename?: 'Mutation', deleteGroup: { __typename?: 'Group', id: number, name: string, color: string } };
+
+
+export const ExercisesAndGroupsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ExercisesAndGroups"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"exercises"},"name":{"kind":"Name","value":"exercisesByUserId"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"group"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"groups"},"name":{"kind":"Name","value":"groupsByUserId"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}},{"kind":"Field","name":{"kind":"Name","value":"isTodaysGroupSet"}}]}}]} as unknown as DocumentNode<ExercisesAndGroupsQuery, ExercisesAndGroupsQueryVariables>;
 export const PreviousWorkoutDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"PreviousWorkout"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"exerciseId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"previousWorkout"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"exerciseId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"exerciseId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"exercise"}},{"kind":"Field","name":{"kind":"Name","value":"sets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"setNum"}},{"kind":"Field","name":{"kind":"Name","value":"weight"}},{"kind":"Field","name":{"kind":"Name","value":"reps"}}]}}]}}]}}]} as unknown as DocumentNode<PreviousWorkoutQuery, PreviousWorkoutQueryVariables>;
-export const WorkoutsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Workouts"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"workouts"},"name":{"kind":"Name","value":"workoutsByUserId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"exercise"}},{"kind":"Field","name":{"kind":"Name","value":"sets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"setNum"}},{"kind":"Field","name":{"kind":"Name","value":"weight"}},{"kind":"Field","name":{"kind":"Name","value":"reps"}}]}}]}}]}}]} as unknown as DocumentNode<WorkoutsQuery, WorkoutsQueryVariables>;
-export const ScheduleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Schedule"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"schedule"},"name":{"kind":"Name","value":"scheduleByUserId"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"group"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<ScheduleQuery, ScheduleQueryVariables>;
+export const WorkoutsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Workouts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"workouts"},"name":{"kind":"Name","value":"workoutsByUserId"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"exercise"}},{"kind":"Field","name":{"kind":"Name","value":"sets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"setNum"}},{"kind":"Field","name":{"kind":"Name","value":"weight"}},{"kind":"Field","name":{"kind":"Name","value":"reps"}}]}}]}}]}}]} as unknown as DocumentNode<WorkoutsQuery, WorkoutsQueryVariables>;
+export const ScheduleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Schedule"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"schedule"},"name":{"kind":"Name","value":"scheduleByUserId"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"group"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<ScheduleQuery, ScheduleQueryVariables>;
 export const AddExerciseDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddExercise"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"exerciseData"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ExerciseData"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addExercise"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"exerciseData"},"value":{"kind":"Variable","name":{"kind":"Name","value":"exerciseData"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"group"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<AddExerciseMutation, AddExerciseMutationVariables>;
 export const SetTodaysGroupDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetTodaysGroup"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"scheduleData"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ScheduleInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addScheduleDay"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"scheduleData"},"value":{"kind":"Variable","name":{"kind":"Name","value":"scheduleData"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"group"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<SetTodaysGroupMutation, SetTodaysGroupMutationVariables>;
 export const AddWorkoutDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddWorkout"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"workoutData"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddWorkoutInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addWorkout"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"workoutData"},"value":{"kind":"Variable","name":{"kind":"Name","value":"workoutData"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"sets"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"setNum"}},{"kind":"Field","name":{"kind":"Name","value":"weight"}},{"kind":"Field","name":{"kind":"Name","value":"reps"}}]}},{"kind":"Field","name":{"kind":"Name","value":"exercise"}}]}}]}}]} as unknown as DocumentNode<AddWorkoutMutation, AddWorkoutMutationVariables>;
+export const AddGroupDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddGroup"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"addGroupData"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddGroupInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addGroup"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"addGroupData"},"value":{"kind":"Variable","name":{"kind":"Name","value":"addGroupData"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}}]}}]} as unknown as DocumentNode<AddGroupMutation, AddGroupMutationVariables>;
+export const UpdateGroupDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateGroup"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"updateGroupData"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateGroupInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateGroup"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"updateGroupData"},"value":{"kind":"Variable","name":{"kind":"Name","value":"updateGroupData"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}}]}}]} as unknown as DocumentNode<UpdateGroupMutation, UpdateGroupMutationVariables>;
+export const DeleteGroupDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteGroup"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteGroup"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"color"}}]}}]}}]} as unknown as DocumentNode<DeleteGroupMutation, DeleteGroupMutationVariables>;

@@ -10,6 +10,7 @@ import passport from 'passport';
 import { passportConfig } from './config/passport.config';
 import session from 'express-session';
 import { sessionOptions } from './config/express-session.config';
+import { contextMiddleware } from './middleware/context.middleware';
 
 passportConfig(passport);
 
@@ -22,10 +23,12 @@ if (process.env.NODE_ENV === 'development') {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.json({ limit: '10kb' }));
+app.use(session(sessionOptions));
+
+app.use(contextMiddleware);
 
 app.use(yoga.graphqlEndpoint, yoga);
 
-app.use(session(sessionOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/auth', authRouter);

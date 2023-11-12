@@ -28,6 +28,8 @@ export enum EErrorActions {
   SIGN_UP,
   SIGN_IN,
   ADD_EXERCISE,
+  ADD_GROUP,
+  UPDATE_GROUP,
 }
 
 export function getPrismaErrorMessage(
@@ -59,6 +61,16 @@ export function getPrismaErrorMessage(
 
         default:
           return 'An error occurred while trying to save your exercise';
+      }
+    }
+
+    case EErrorActions.ADD_GROUP: {
+      switch (code) {
+        case 'P2002':
+          return `The group, "${description}" already exists!`;
+
+        default:
+          return 'An error occurred while trying to save your group';
       }
     }
 

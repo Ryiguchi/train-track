@@ -4,4 +4,7 @@ import { cacheExchange, fetchExchange, type ClientOptions } from '@urql/vue';
 export const urqlClientOptions: ClientOptions = {
   url: graphQlUrl,
   exchanges: [cacheExchange, fetchExchange],
+  fetchOptions: {
+    credentials: 'include',
+  },
 };

@@ -15,7 +15,7 @@ const { setUser } = useUserStore();
 
 onMounted(async () => {
   const url = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/validateSession`;
-  const response = await ax.post(url);
+  const response = await ax.post(url, {}, { withCredentials: true });
 
   setUser(response.data.data);
 

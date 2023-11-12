@@ -4,7 +4,6 @@ import { ref } from 'vue';
 import { useModalsStore } from '@/stores/modals.store';
 import { useExercisesQuery } from '@/utils/composables/queries/useExerciseQuery';
 import { useGroups } from '@/utils/composables/useGroups';
-import { useUserStore } from '@/stores/user.store';
 import { useMutation } from '@urql/vue';
 import { ADD_EXERCISE } from '@/lib/graphQL/queries';
 import { exerciseDataValidator } from '@/lib/types/zod';
@@ -13,13 +12,11 @@ import {
   addExerciseFailedToast,
   addExerciseSuccessToast,
 } from '@/utils/helpers/toasts.helpers';
-import { isGraphQlError } from '@/lib/types/predicates';
 import BaseInput from '../base/BaseInput.vue';
 import BaseRadioButtons from '../base/BaseRadioButtons.vue';
 
 // STORE
 const { closeAddExerciseModal } = useModalsStore();
-const { userId } = useUserStore();
 const enteredExercise = ref('');
 const { showToast } = useToastStore();
 
@@ -41,13 +38,12 @@ async function handleSubmit(option: string) {
     name: capitalize(enteredExercise.value),
     slug: createSlug(enteredExercise.value),
     groupId: getIdFromName(option),
-    userId,
   };
 
   try {
     const validExerciseData = exerciseDataValidator.parse(exerciseData);
 
-    addExercise({
+    await addExercise({
       exerciseData: validExerciseData,
     });
 
@@ -75,7 +71,7 @@ function handleChangeValue(value: string) {
 
 <template>
   <div class="wrapper">
-    <BaseInput @change-value="handleChangeValue" name="exercise"
+    <BaseInput @change-value="handleChangeValue" name="exercise" color="ghost"
       >Exercise name</BaseInput
     >
     <BaseRadioButtons
@@ -84,7 +80,7 @@ function handleChangeValue(value: string) {
       @cancel="handleCancel"
     >
       Exercise group:
-      <template v-slot:button>Set workout</template>
+      <template v-slot:button>Add</template>
       <template v-slot:cancel>cancel</template>
     </BaseRadioButtons>
   </div>

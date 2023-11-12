@@ -5,10 +5,22 @@ type Group {
 }
 
 type Query {
-  groupsByUserId(userId: Int!): [Group!]
+  groupsByUserId: [Group!]
+}
+
+input AddGroupInput {
+  name: String!
+  color: String!
+}
+
+input UpdateGroupInput {
+  name: String!
+  color: String!
+  id: Int!
 }
 
 type Mutation {
-  addGroup(name: String!, color: String!): Group
-  deleteGroup(name: String!): Group
+  addGroup(addGroupData: AddGroupInput!): Group!
+  deleteGroup(id: Int!): Group!
+  updateGroup(updateGroupData: UpdateGroupInput!): Group!
 }

@@ -3,8 +3,8 @@ import { graphql } from '@/lib/graphQL/gql';
 //QUERIES
 
 export const EXERCISES_AND_GROUPS_QUERY = graphql(/* GraphQL */ `
-  query ExercisesAndGroups($userId: Int!) {
-    exercises: exercisesByUserId(userId: $userId) {
+  query ExercisesAndGroups {
+    exercises: exercisesByUserId {
       id
       name
       slug
@@ -15,7 +15,7 @@ export const EXERCISES_AND_GROUPS_QUERY = graphql(/* GraphQL */ `
       }
     }
 
-    groups: groupsByUserId(userId: $userId) {
+    groups: groupsByUserId {
       id
       name
       color
@@ -42,8 +42,8 @@ export const PREVIOUS_WORKOUT_QUERY = graphql(`
 `);
 
 export const WORKOUTS_QUERY = graphql(`
-  query Workouts($userId: Int!) {
-    workouts: workoutsByUserId(userId: $userId) {
+  query Workouts {
+    workouts: workoutsByUserId {
       id
       date
       exercise
@@ -58,8 +58,8 @@ export const WORKOUTS_QUERY = graphql(`
 `);
 
 export const SCEDULE_QUERY = graphql(`
-  query Schedule($userId: Int!) {
-    schedule: scheduleByUserId(userId: $userId) {
+  query Schedule {
+    schedule: scheduleByUserId {
       id
       date
       group {
@@ -114,6 +114,36 @@ export const ADD_WORKOUT = graphql(`
         reps
       }
       exercise
+    }
+  }
+`);
+
+export const ADD_GROUP = graphql(`
+  mutation AddGroup($addGroupData: AddGroupInput!) {
+    addGroup(addGroupData: $addGroupData) {
+      id
+      name
+      color
+    }
+  }
+`);
+
+export const UPDATE_GROUP = graphql(`
+  mutation UpdateGroup($updateGroupData: UpdateGroupInput!) {
+    updateGroup(updateGroupData: $updateGroupData) {
+      id
+      name
+      color
+    }
+  }
+`);
+
+export const DELETE_GROUP = graphql(`
+  mutation DeleteGroup($id: Int!) {
+    deleteGroup(id: $id) {
+      id
+      name
+      color
     }
   }
 `);

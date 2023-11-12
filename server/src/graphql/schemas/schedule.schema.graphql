@@ -5,14 +5,13 @@ type Schedule {
 }
 
 type Query {
-  scheduleByUserId(userId: Int!): [Schedule!]
+  scheduleByUserId: [Schedule!]
   isTodaysGroupSet: Boolean
 }
 
 input ScheduleInput {
   date: String!
   groupId: Int!
-  userId: Int!
 }
 
 input UpdateScheduleInput {

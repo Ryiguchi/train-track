@@ -23,7 +23,7 @@ declare global {
       'data' | 'error' | 'fetching' | 'executeQuery'
     > {
     exercises: ComputedRef<Exercise[]>;
-    groups: ComputedRef<Group[]>;
+    groups: ComputedRef<IGroupWithEnum[]>;
     groupNames: ComputedRef<string[]>;
     isTodaysGroupSet: ComputedRef<boolean>;
     exerciseNames: ComputedRef<string[]>;

@@ -16,20 +16,18 @@ const selectOptions = {
   },
 };
 
-export async function getWorkouts(
-  query: IStringIndexSig<string | number | IStringIndexSig<string>> = {}
-) {
+export async function getWorkouts(userId: number) {
   const workoutsResults = await prisma.workout.findMany({
-    where: query,
+    where: { userId },
     select: selectOptions,
   });
 
   return workoutsResults as unknown as Workout[];
 }
 
-export async function getPreviousWorkout(exerciseId: number) {
+export async function getPreviousWorkout(exerciseId: number, userId: number) {
   const workout = await prisma.workout.findFirstOrThrow({
-    where: { exerciseId },
+    where: { exerciseId, userId },
     orderBy: { date: 'desc' },
     select: selectOptions,
   });
@@ -37,7 +35,12 @@ export async function getPreviousWorkout(exerciseId: number) {
   return workout as unknown as Workout;
 }
 
-export async function addWorkout(data: AddWorkoutInput) {
+export async function addWorkout(workoutData: AddWorkoutInput, userId: number) {
+  const data = {
+    ...workoutData,
+    userId,
+  };
+
   const addedWorkout = await prisma.workout.create({
     data,
     include: { exercise: true },
@@ -46,8 +49,8 @@ export async function addWorkout(data: AddWorkoutInput) {
   return addedWorkout as unknown as Workout;
 }
 
-export async function deleteWorkout(id: number) {
-  const deletedWorkout = await prisma.workout.delete({ where: { id } });
+export async function deleteWorkout(id: number, userId: number) {
+  const deletedWorkout = await prisma.workout.delete({ where: { id, userId } });
 
   return deletedWorkout as unknown as DeletedWorkout;
 }

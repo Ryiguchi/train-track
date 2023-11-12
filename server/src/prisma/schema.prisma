@@ -9,7 +9,7 @@
 // --skip-seed - add to prisma migrate to skip seeding
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
@@ -37,27 +37,29 @@ model User {
 
 model Exercise {
   id      Int       @id @default(autoincrement())
-  name    String    @unique
-  slug    String    @unique
+  name    String
+  slug    String
   groupId Int?
   group   Group?    @relation(fields: [groupId], references: [id], onDelete: SetNull)
-  userId  Int?
-  user    User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId  Int
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   Workout Workout[]
 
+  @@unique([name, userId])
   @@index([userId])
   @@map("exercise")
 }
 
 model Group {
   id       Int        @id @default(autoincrement())
-  name     String     @unique
-  color  String
-  userId   Int?
-  user     User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  name     String
+  color    String
+  userId   Int
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   Exercise Exercise[]
   Schedule Schedule[]
 
+  @@unique([name, userId])
   @@index([userId])
   @@map("group")
 }
@@ -67,22 +69,22 @@ model Schedule {
   date    DateTime
   groupId Int?
   group   Group?   @relation(fields: [groupId], references: [id], onDelete: SetNull)
-  userId  Int?
-  user    User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId  Int
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([date, groupId])
+  @@unique([date, groupId, userId])
   @@index([date, userId])
   @@map("schedule")
 }
 
 model Workout {
   id         Int      @id @default(autoincrement())
-  date       DateTime 
+  date       DateTime
   sets       Json[]
   exerciseId Int
   exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-  userId     Int?
-  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([exerciseId, date, userId])
   @@map("workout")

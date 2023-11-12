@@ -20,7 +20,7 @@ type Workout {
 }
 
 type Query {
-  workoutsByUserId(userId: Int!): [Workout!]
+  workoutsByUserId: [Workout!]
   previousWorkout(exerciseId: Int!): Workout
 }
 
@@ -28,7 +28,6 @@ input AddWorkoutInput {
   date: String!
   sets: [SetInput!]!
   exerciseId: Int!
-  userId: Int!
 }
 
 type Mutation {

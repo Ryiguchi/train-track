@@ -2,7 +2,6 @@
 import { useMutation } from '@urql/vue';
 
 import { useModalsStore } from '@/stores/modals.store';
-import { useUserStore } from '@/stores/user.store';
 import { useToastStore } from '@/stores/toast.store';
 
 import { useExercisesQuery } from '@/utils/composables/queries/useExerciseQuery';
@@ -17,7 +16,6 @@ import {
 
 // STORE
 const { closeSetDailyGroupModal } = useModalsStore();
-const { userId } = useUserStore();
 const { showToast } = useToastStore();
 
 // QUERY
@@ -30,7 +28,6 @@ const { getIdFromName } = useGroups();
 // FUNCTIONS
 function handleSubmit(option: string) {
   const scheduleData = {
-    userId,
     groupId: getIdFromName(option),
     date: new Date().toISOString(),
   };

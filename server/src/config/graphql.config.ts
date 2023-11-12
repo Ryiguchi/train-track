@@ -6,7 +6,7 @@ import { exerciseResolvers } from '../graphql/resolvers/exercise.resolvers';
 import { groupResolvers } from '../graphql/resolvers/group.resolvers';
 import { scheduleResolvers } from '../graphql/resolvers/schedule.resolvers';
 import { workoutResolvers } from '../graphql/resolvers/workout.resolvers';
-
+import { hasUserId } from '../types/predicates';
 const typeDefs = loadFilesSync('**/*', {
   extensions: ['graphql'],
 });

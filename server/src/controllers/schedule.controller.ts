@@ -16,9 +16,10 @@ export async function getScheduleByUserId(userId: number) {
   return schedule as unknown as Schedule[];
 }
 
-export async function checkIsTodaysGroupSet() {
+export async function checkIsTodaysGroupSet(userId: number) {
   const today = new Date().toISOString().slice(0, 10);
-  const schedule = await prisma.schedule.findMany();
+
+  const schedule = await prisma.schedule.findMany({ where: { userId } });
 
   const isScheduleForToday = schedule.find(
     day => day.date.toISOString().slice(0, 10) === today
@@ -31,7 +32,15 @@ export async function checkIsTodaysGroupSet() {
   }
 }
 
-export async function addScheduleDay(data: ScheduleInput) {
+export async function addScheduleDay(
+  scheduleData: ScheduleInput,
+  userId: number
+) {
+  const data = {
+    ...scheduleData,
+    userId,
+  };
+
   const newScheduleDay = await prisma.schedule.create({
     data,
     include: { group: true },
@@ -39,9 +48,12 @@ export async function addScheduleDay(data: ScheduleInput) {
   return newScheduleDay as unknown as Schedule;
 }
 
-export async function upadteScheduleDay(fieldsToUpdate: UpdateScheduleInput) {
+export async function upadteScheduleDay(
+  fieldsToUpdate: UpdateScheduleInput,
+  userId: number
+) {
   const updatedSchedule = await prisma.schedule.update({
-    where: { id: fieldsToUpdate.id },
+    where: { id: fieldsToUpdate.id, userId },
     data: fieldsToUpdate,
     include: { group: true },
   });

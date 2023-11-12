@@ -111,6 +111,7 @@
     "src/types/global.d.ts",
     "src/types/data.d.ts",
     "src/types/express.d.ts",
-    "src/types/user.d.ts"
+    "src/types/user.d.ts",
+    "src/types/graphql.d.ts"
   ]
 }

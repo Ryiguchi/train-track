@@ -53,6 +53,9 @@ function SetOpenList(value: string | null) {
     <base-button color="ghost" @click="openAddExerciseModal()"
       >add exercise</base-button
     >
+    <base-button color="ghost" @click="$router.push('/settings/group')"
+      >add group</base-button
+    >
     <base-button
       v-if="!isTodaysGroupSet"
       color="primary"

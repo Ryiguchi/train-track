@@ -17,7 +17,12 @@ export async function getexercisesByUserId(userId: number) {
   return exercises as unknown as Exercise[];
 }
 
-export async function addExercise(data: ExerciseData) {
+export async function addExercise(exerciseData: ExerciseData, userId: number) {
+  const data = {
+    ...exerciseData,
+    userId,
+  };
+
   try {
     const exercise = await prisma.exercise.create({
       data,
@@ -40,10 +45,14 @@ export async function addExercise(data: ExerciseData) {
   }
 }
 
-export async function updateExercise(fieldsToUpdate: IExerciseUpdateInput) {
+export async function updateExercise(
+  fieldsToUpdate: IExerciseUpdateInput,
+  userId: number
+) {
   const updatedExercise = await prisma.exercise.update({
     where: {
       id: fieldsToUpdate.id,
+      userId,
     },
     data: {
       ...fieldsToUpdate,
@@ -56,8 +65,10 @@ export async function updateExercise(fieldsToUpdate: IExerciseUpdateInput) {
   return updatedExercise as unknown as Exercise;
 }
 
-export async function deleteExercise(id: number) {
-  const deletedExercise = await prisma.exercise.delete({ where: { id } });
+export async function deleteExercise(id: number, userId: number) {
+  const deletedExercise = await prisma.exercise.delete({
+    where: { id, userId },
+  });
 
   return deletedExercise;
 }

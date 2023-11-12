@@ -11,11 +11,10 @@ const { color, size } = defineProps({
     default: 'lg',
   },
 });
-const sizeClass = size === 'lg' ? 'button-lg' : 'button-sm';
 </script>
 
 <template>
-  <button :class="[color, sizeClass]">
+  <button :class="[color, size]">
     <slot></slot>
   </button>
 </template>
@@ -25,7 +24,6 @@ button
   @include text-button
   border: none
   border-radius: $br_md
-  padding: 0 $sp_8
 
   &.primary
     background-color: $c1
@@ -43,12 +41,19 @@ button
     border: 1px solid $c-dk
     color: $c-dk
 
-  &.button-sm
+  &.small
+    width: 13.5rem
+    height: 4rem
+    font-size: $fs_1
+
+  &.sm
     width: fit-content
     min-width: 21rem
+    padding: 0 $sp_8
     height: 4rem
 
-  &.button-lg
+  &.lg
     width: 100%
     height:  5rem
+    padding: 0 $sp_8
 </style>

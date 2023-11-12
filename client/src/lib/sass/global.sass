@@ -1,23 +1,36 @@
 
-$c1: #FF7100
+$c1: #00A3FF
 $c1-lt: #FFB376
 $c2: #4E1FE7
 $c2-lt: #B5A3EF
 $c3: #C1EF5A 
 
 $c-dkst: #222
-$c-dk: #333
+$c-dk: #1C202E
 $c-lt: #aaa
 $c-gr-lt: #555
-$c-gr-dk: #888textColor
+$c-gr-dk: #888
+
+$gradient: linear-gradient(164deg, #414B6F 0%, #1C202E 48.08%, #070910 98.88%)
 
 $ex-view-color: $c2-lt
 
 $c-t-success: #59B100
 $c-t-failed: #C91919
-$c-t-loading: #C79002
+// $c-t-loading: #C79002
+$c-t-loading: $c1
 $c-t-dark: #292a38
 $c-t-light: #3c3d52
+
+$colors: ("purple": #9D84EB, "orange": #FFB376, "dark-blue": #76A7D4, "blue": #7FDAEE, "red": #F8A2A2, "yellow": #D8BB56, "green": #C1EF5A, "pink": #E696E8)
+
+
+@mixin colorFill($class-name, $color)
+  &.#{$class-name}
+    background-color: $color
+
+  
+
 
 $sp_0: .6rem
 $sp_1: .8rem
@@ -49,7 +62,7 @@ $fs_9: 8.6rem
 
 $br_sm: 5px
 $br_md: 10px
-$br_lg: 10px
+$br_lg: 20px
 
 @mixin text-xsm
   font-size: $fs_2
@@ -94,6 +107,16 @@ $br_lg: 10px
 @mixin text-placeholder
   font-size: $fs_2-b
   color: $c-gr-lt
+
+@mixin settings-header
+  font-size: $fs_4
+  color: $c-lt
+  font-weight: 600
+
+@mixin settings-item
+  font-size: $fs_4
+  color: $c-lt
+  font-weight: 400
 
 @mixin section-styles
   width: 100%

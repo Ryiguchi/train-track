@@ -2,4 +2,4 @@
 
 <template></template>
 
-<style scoped lang="sass"></style>
+<style scoped></style>

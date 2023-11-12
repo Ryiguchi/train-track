@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { capitalize, ref, type PropType } from 'vue';
+import TheModalButtons from '../UI/TheModalButtons.vue';
 
 const { options } = defineProps({
   options: {
@@ -48,14 +49,9 @@ function handleCancel() {
         <label :for="option">{{ capitalize(option) }}</label>
       </div>
     </div>
-    <div class="button-wrapper">
-      <base-button size="sm" @click="handleSubmit">
-        <slot name="button"></slot>
-      </base-button>
-      <base-button size="sm" color="ghost" @click="handleCancel">
-        <slot name="cancel">Cancel</slot>
-      </base-button>
-    </div>
+    <TheModalButtons @accept="handleSubmit" @cancel="handleCancel"
+      ><slot name="button"></slot
+    ></TheModalButtons>
   </fieldset>
 </template>
 
@@ -110,10 +106,4 @@ fieldset
     height: 1rem
     border-radius: 50%
     background-color: $c1
-
-  .button-wrapper
-    display: flex
-    flex-direction: column
-    align-items: center
-    gap: $sp_5
 </style>
