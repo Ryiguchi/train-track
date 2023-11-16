@@ -1,15 +1,18 @@
 
-$c1: #00A3FF
-$c1-lt: #FFB376
-$c2: #4E1FE7
+$c1: rgb(0, 163, 255)
+$c1-lt: #a8dfff
+$c2: #FF5700
 $c2-lt: #B5A3EF
 $c3: #C1EF5A 
 
 $c-dkst: #222
-$c-dk: #1C202E
-$c-lt: #aaa
-$c-gr-lt: #555
+$c-dk: #12103a
+// $c-dk: #1C202E
+$c-lt: #808eac
+$c-gr-lt: #808eac
 $c-gr-dk: #888
+
+$c-outline: #40E0D0
 
 $gradient: linear-gradient(164deg, #414B6F 0%, #1C202E 48.08%, #070910 98.88%)
 
@@ -22,14 +25,27 @@ $c-t-loading: $c1
 $c-t-dark: #292a38
 $c-t-light: #3c3d52
 
-$colors: ("purple": #9D84EB, "orange": #FFB376, "dark-blue": #76A7D4, "blue": #7FDAEE, "red": #F8A2A2, "yellow": #D8BB56, "green": #C1EF5A, "pink": #E696E8)
+$colors: ("purple": #7E53C1, "orange": #FF944D, "dark-blue": #003366, "blue": #00A3FF, "red": #FF5700, "yellow": #FFD700, "green": #4CAF50, "pink": #FF4081)
 
 
-@mixin colorFill($class-name, $color)
+@mixin color-fill($class-name, $color)
   &.#{$class-name}
     background-color: $color
+    color: $c-dk
 
-  
+@mixin color-text($class-name, $color)
+  &.#{$class-name}
+    color: $color
+
+@mixin color-accordian($class-name, $color)
+  &.#{$class-name}
+    border: 1px solid $color
+    h2
+      color: $color
+
+@mixin color-stroke($class-name, $color)
+  &.#{$class-name}
+    stroke: $color
 
 
 $sp_0: .6rem
@@ -68,6 +84,8 @@ $br_lg: 20px
   font-size: $fs_2
   font-weight: 400
   color: $c-lt
+  line-height: 1.5
+  letter-spacing: .2px
 
 @mixin text-sm
   font-size: $fs_2-b
@@ -90,7 +108,6 @@ $br_lg: 20px
 @mixin text-h1
   font-size: $fs_6
   font-weight: 700
-  color: $c-dk
 
 @mixin text-calender-header
   font-size: $fs_4
@@ -120,8 +137,74 @@ $br_lg: 20px
 
 @mixin section-styles
   width: 100%
-  padding: $sp_6
+  background-color: rgba(255,255,255,.05)
+  // padding: $sp_6
   border-radius: $br_md
+
+@mixin overlay
+  position: absolute
+  top: 0
+  left: 0
+  width: 100vw
+  height: 100vh
+  background-color: rgba(0, 0, 0, .1)
+  z-index: 50
+  backdrop-filter:  blur(2px) brightness(50%)
+
+// @mixin section
+//   padding: $sp_4
+//   border-radius: $br_lg
+//   background-color: 
+
+  // GLOBAL STYLES
+
+*
+  box-sizing: border-box
+  margin: 0
+  padding: 0
+
+html
+  font-family: 'Inter'
+  font-size: 62.5%
+
+body
+  background-color: $c-dk
+  padding: 0 $sp_6
+  max-width: 40rem
+  margin: 0 auto
+
+main
+  margin-top: $sp_6
+
+a
+  text-decoration: none
+
+ul
+  list-style: none
+
+button
+  cursor: pointer
+
+input
+  &:focus
+      outline: 1px solid $c-outline
+      outline-offset: 2px
+
+.center
+  display: flex
+  align-items: center
+  justify-content: center
 
 .w-full
   width: 100%
+
+.stroke-primary
+  stroke: $c1
+
+.stroke-secondary
+  stroke: $c2
+
+.fill-primary
+  fill: $c1
+
+

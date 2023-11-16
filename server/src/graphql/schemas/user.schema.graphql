@@ -2,12 +2,28 @@ type User {
   id: Int!
   createdAt: String!
   updatedAt: String!
-  name: String!
-  email: String!
+  name: String
+  email: String
   password: String
   googleId: String
 }
 
-# type Query {
-#   user(id: Int!): User
-# }
+type Query {
+  userById: User!
+}
+
+input UpdateEmailInput {
+  email: String!
+  password: String!
+}
+
+input UpdatePasswordInput {
+  newPassword: String!
+  oldPassword: String!
+}
+
+type Mutation {
+  updateName(name: String!): User!
+  updateEmail(updateEmailInput: UpdateEmailInput!): User!
+  updatePassword(updatePasswordInput: UpdatePasswordInput!): User!
+}

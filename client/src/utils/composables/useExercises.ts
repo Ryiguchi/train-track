@@ -21,10 +21,15 @@ export function useExercises() {
     return exercises.value.find(item => item.slug === slug)?.id;
   }
 
+  function getExerciseFromName(name: string) {
+    return exercises.value.find(exercise => exercise.name === name);
+  }
+
   return {
     filterByGroup,
     getSlugFromName,
     getExerciseFromSlug,
     getIdFromSlug,
+    getExerciseFromName,
   };
 }

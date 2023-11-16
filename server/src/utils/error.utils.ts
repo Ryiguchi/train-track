@@ -30,6 +30,8 @@ export enum EErrorActions {
   ADD_EXERCISE,
   ADD_GROUP,
   UPDATE_GROUP,
+  UPDATE_EXERCISE,
+  UPDATE_USER,
 }
 
 export function getPrismaErrorMessage(
@@ -60,7 +62,17 @@ export function getPrismaErrorMessage(
           return `The exercise, "${description}" already exists!`;
 
         default:
-          return 'An error occurred while trying to save your exercise';
+          return 'An error occurred while trying to save your exercise!';
+      }
+    }
+
+    case EErrorActions.UPDATE_EXERCISE: {
+      switch (code) {
+        case 'P2002':
+          return `The exercise, "${description}" already exists!`;
+
+        default:
+          return 'An error occurred while trying to update your exercise!';
       }
     }
 
@@ -70,7 +82,27 @@ export function getPrismaErrorMessage(
           return `The group, "${description}" already exists!`;
 
         default:
-          return 'An error occurred while trying to save your group';
+          return 'An error occurred while trying to save your group!';
+      }
+    }
+
+    case EErrorActions.UPDATE_GROUP: {
+      switch (code) {
+        case 'P2002':
+          return `The group, "${description}" already exists!`;
+
+        default:
+          return 'An error occurred while trying to update your group!';
+      }
+    }
+
+    case EErrorActions.UPDATE_USER: {
+      switch (code) {
+        case 'P2002':
+          return `An account with the email, "${description}" already exists!`;
+
+        default:
+          return 'An error occurred while trying to update your account!';
       }
     }
 

@@ -49,20 +49,33 @@ export async function updateExercise(
   fieldsToUpdate: IExerciseUpdateInput,
   userId: number
 ) {
-  const updatedExercise = await prisma.exercise.update({
-    where: {
-      id: fieldsToUpdate.id,
-      userId,
-    },
-    data: {
-      ...fieldsToUpdate,
-    },
-    include: {
-      group: true,
-    },
-  });
+  try {
+    const updatedExercise = await prisma.exercise.update({
+      where: {
+        id: fieldsToUpdate.id,
+        userId,
+      },
+      data: {
+        ...fieldsToUpdate,
+      },
+      include: {
+        group: true,
+      },
+    });
 
-  return updatedExercise as unknown as Exercise;
+    return updatedExercise as unknown as Exercise;
+  } catch (error: any) {
+    if (isPrismaError(error)) {
+      const errorMessage = getPrismaErrorMessage(
+        error.code,
+        EErrorActions.ADD_EXERCISE,
+        fieldsToUpdate.name
+      );
+
+      throw new GraphQLError(errorMessage);
+    }
+    throw error;
+  }
 }
 
 export async function deleteExercise(id: number, userId: number) {

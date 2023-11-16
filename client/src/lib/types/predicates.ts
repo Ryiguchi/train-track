@@ -1,3 +1,4 @@
+import { EStatTypes } from '@/utils/composables/useStatistics';
 import { CombinedError } from '@urql/vue';
 import { AxiosError } from 'axios';
 import type { ZodError } from 'zod';
@@ -34,4 +35,8 @@ export function isAxiosFailedResponse(
   response: AxiosSuccessResponse | AxiosFailedResponse
 ): response is AxiosFailedResponse {
   return !(response as AxiosFailedResponse).data.ok;
+}
+
+export function isStatType(value: string): value is EStatTypes {
+  return Object.values(EStatTypes).includes(value as EStatTypes);
 }

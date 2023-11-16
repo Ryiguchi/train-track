@@ -1,12 +1,12 @@
 import { useQuery } from '@urql/vue';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { EXERCISES_AND_GROUPS_QUERY } from '@/lib/graphQL/queries';
 import { useCalenderStore } from '@/stores/calender.store';
 
 export function useExercisesQuery(): TExerciseReturn {
   const { setLegend } = useCalenderStore();
 
-  const { data, error, fetching, executeQuery } = useQuery({
+  const { data, error, fetching, executeQuery, stale } = useQuery({
     query: EXERCISES_AND_GROUPS_QUERY,
   });
 
@@ -19,9 +19,11 @@ export function useExercisesQuery(): TExerciseReturn {
   });
 
   const exerciseNames = computed(() => {
-    return exercises.value.map(item => {
-      return item.name;
-    });
+    return exercises.value
+      .map(item => {
+        return item.name;
+      })
+      .sort();
   });
 
   const groups = computed(() => {
@@ -50,6 +52,12 @@ export function useExercisesQuery(): TExerciseReturn {
     return true;
   });
 
+  function refreshExercises() {
+    executeQuery({
+      requestPolicy: 'network-only',
+    });
+  }
+
   return {
     data,
     exercises,
@@ -59,6 +67,6 @@ export function useExercisesQuery(): TExerciseReturn {
     isTodaysGroupSet,
     error,
     fetching,
-    executeQuery,
+    refreshExercises,
   };
 }

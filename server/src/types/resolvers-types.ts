@@ -58,11 +58,11 @@ export type ExerciseData = {
   slug: Scalars['String']['input'];
 };
 
-export type ExerciseDataOptional = {
+export type ExerciseDataWithId = {
   groupId?: InputMaybe<Scalars['Int']['input']>;
   id: Scalars['Int']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
-  slug?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  slug: Scalars['String']['input'];
 };
 
 export type Group = {
@@ -86,8 +86,11 @@ export type Mutation = {
   deleteExercise?: Maybe<DeletedExercise>;
   deleteGroup: Group;
   deleteWorkout?: Maybe<DeletedWorkout>;
+  updateEmail: User;
   updateExercise?: Maybe<Exercise>;
   updateGroup: Group;
+  updateName: User;
+  updatePassword: User;
   updateScheduleDay?: Maybe<Schedule>;
 };
 
@@ -127,13 +130,28 @@ export type MutationDeleteWorkoutArgs = {
 };
 
 
+export type MutationUpdateEmailArgs = {
+  updateEmailInput: UpdateEmailInput;
+};
+
+
 export type MutationUpdateExerciseArgs = {
-  fieldsToUpdate: ExerciseDataOptional;
+  fieldsToUpdate: ExerciseDataWithId;
 };
 
 
 export type MutationUpdateGroupArgs = {
   updateGroupData: UpdateGroupInput;
+};
+
+
+export type MutationUpdateNameArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationUpdatePasswordArgs = {
+  updatePasswordInput: UpdatePasswordInput;
 };
 
 
@@ -148,6 +166,7 @@ export type Query = {
   isTodaysGroupSet?: Maybe<Scalars['Boolean']['output']>;
   previousWorkout?: Maybe<Workout>;
   scheduleByUserId?: Maybe<Array<Schedule>>;
+  userById: User;
   workoutsByUserId?: Maybe<Array<Workout>>;
 };
 
@@ -183,10 +202,20 @@ export type SetInput = {
   weight: Scalars['Float']['input'];
 };
 
+export type UpdateEmailInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
 export type UpdateGroupInput = {
   color: Scalars['String']['input'];
   id: Scalars['Int']['input'];
   name: Scalars['String']['input'];
+};
+
+export type UpdatePasswordInput = {
+  newPassword: Scalars['String']['input'];
+  oldPassword: Scalars['String']['input'];
 };
 
 export type UpdateScheduleInput = {
@@ -197,10 +226,10 @@ export type UpdateScheduleInput = {
 export type User = {
   __typename?: 'User';
   createdAt: Scalars['String']['output'];
-  email: Scalars['String']['output'];
+  email?: Maybe<Scalars['String']['output']>;
   googleId?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
-  name: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
   password?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['String']['output'];
 };
@@ -211,6 +240,8 @@ export type Workout = {
   exercise: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   sets: Array<Set>;
+  totalReps: Scalars['Int']['output'];
+  totalWeight: Scalars['Int']['output'];
 };
 
 
@@ -291,7 +322,7 @@ export type ResolversTypes = {
   DeletedWorkout: ResolverTypeWrapper<DeletedWorkout>;
   Exercise: ResolverTypeWrapper<Exercise>;
   ExerciseData: ExerciseData;
-  ExerciseDataOptional: ExerciseDataOptional;
+  ExerciseDataWithId: ExerciseDataWithId;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Group: ResolverTypeWrapper<Group>;
   GroupName: ResolverTypeWrapper<GroupName>;
@@ -303,7 +334,9 @@ export type ResolversTypes = {
   Set: ResolverTypeWrapper<Set>;
   SetInput: SetInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  UpdateEmailInput: UpdateEmailInput;
   UpdateGroupInput: UpdateGroupInput;
+  UpdatePasswordInput: UpdatePasswordInput;
   UpdateScheduleInput: UpdateScheduleInput;
   User: ResolverTypeWrapper<User>;
   Workout: ResolverTypeWrapper<Workout>;
@@ -318,7 +351,7 @@ export type ResolversParentTypes = {
   DeletedWorkout: DeletedWorkout;
   Exercise: Exercise;
   ExerciseData: ExerciseData;
-  ExerciseDataOptional: ExerciseDataOptional;
+  ExerciseDataWithId: ExerciseDataWithId;
   Float: Scalars['Float']['output'];
   Group: Group;
   GroupName: GroupName;
@@ -330,7 +363,9 @@ export type ResolversParentTypes = {
   Set: Set;
   SetInput: SetInput;
   String: Scalars['String']['output'];
+  UpdateEmailInput: UpdateEmailInput;
   UpdateGroupInput: UpdateGroupInput;
+  UpdatePasswordInput: UpdatePasswordInput;
   UpdateScheduleInput: UpdateScheduleInput;
   User: User;
   Workout: Workout;
@@ -381,8 +416,11 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteExercise?: Resolver<Maybe<ResolversTypes['DeletedExercise']>, ParentType, ContextType, RequireFields<MutationDeleteExerciseArgs, 'id'>>;
   deleteGroup?: Resolver<ResolversTypes['Group'], ParentType, ContextType, RequireFields<MutationDeleteGroupArgs, 'id'>>;
   deleteWorkout?: Resolver<Maybe<ResolversTypes['DeletedWorkout']>, ParentType, ContextType, RequireFields<MutationDeleteWorkoutArgs, 'id'>>;
+  updateEmail?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateEmailArgs, 'updateEmailInput'>>;
   updateExercise?: Resolver<Maybe<ResolversTypes['Exercise']>, ParentType, ContextType, RequireFields<MutationUpdateExerciseArgs, 'fieldsToUpdate'>>;
   updateGroup?: Resolver<ResolversTypes['Group'], ParentType, ContextType, RequireFields<MutationUpdateGroupArgs, 'updateGroupData'>>;
+  updateName?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateNameArgs, 'name'>>;
+  updatePassword?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdatePasswordArgs, 'updatePasswordInput'>>;
   updateScheduleDay?: Resolver<Maybe<ResolversTypes['Schedule']>, ParentType, ContextType, RequireFields<MutationUpdateScheduleDayArgs, 'fieldsToUpdate'>>;
 };
 
@@ -392,6 +430,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   isTodaysGroupSet?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   previousWorkout?: Resolver<Maybe<ResolversTypes['Workout']>, ParentType, ContextType, RequireFields<QueryPreviousWorkoutArgs, 'exerciseId'>>;
   scheduleByUserId?: Resolver<Maybe<Array<ResolversTypes['Schedule']>>, ParentType, ContextType>;
+  userById?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   workoutsByUserId?: Resolver<Maybe<Array<ResolversTypes['Workout']>>, ParentType, ContextType>;
 };
 
@@ -412,10 +451,10 @@ export type SetResolvers<ContextType = any, ParentType extends ResolversParentTy
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   googleId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   password?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -426,6 +465,8 @@ export type WorkoutResolvers<ContextType = any, ParentType extends ResolversPare
   exercise?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   sets?: Resolver<Array<ResolversTypes['Set']>, ParentType, ContextType>;
+  totalReps?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalWeight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

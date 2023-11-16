@@ -14,3 +14,9 @@ export enum EColors {
   PINK = 'pink',
   DARK_BLUE = 'dark-blue',
 }
+
+export enum NavItem {
+  NAME = 'Name',
+  EMAIL = 'Email',
+  PASS = 'Password',
+}

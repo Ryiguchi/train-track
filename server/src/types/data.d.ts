@@ -1,3 +1,5 @@
+import { User } from './resolvers-types';
+
 export {};
 
 declare global {
@@ -6,5 +8,10 @@ declare global {
     name?: string;
     slug?: string;
     groupId?: number;
+  }
+
+  interface IUser extends User {
+    createdAt: string;
+    updatedAt: string;
   }
 }

@@ -1,11 +1,18 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { SessionData } from 'express-session';
 import { YogaInitialContext } from 'graphql-yoga';
+import { ZodError } from 'zod';
 
 export function isPrismaError(
-  error: PrismaClientKnownRequestError | Error
+  error: PrismaClientKnownRequestError | Error | ZodError
 ): error is PrismaClientKnownRequestError {
   return (error as PrismaClientKnownRequestError).code !== undefined;
+}
+
+export function isZodError(
+  error: PrismaClientKnownRequestError | ZodError | Error
+): error is ZodError {
+  return (error as ZodError).errors !== undefined;
 }
 
 export function hasPassport(

@@ -35,14 +35,6 @@ export async function addGroup(addGroupData: AddGroupInput, userId: number) {
   }
 }
 
-export async function deleteGroup(id: number, userId: number) {
-  const deletedGroup = await prisma.group.delete({
-    where: { id, userId },
-  });
-
-  return deletedGroup;
-}
-
 export async function updateGroup(
   updateGroupData: UpdateGroupInput,
   userId: number
@@ -58,4 +50,12 @@ export async function updateGroup(
   });
 
   return updatedGroup;
+}
+
+export async function deleteGroup(id: number, userId: number) {
+  const deletedGroup = await prisma.group.delete({
+    where: { id, userId },
+  });
+
+  return deletedGroup;
 }

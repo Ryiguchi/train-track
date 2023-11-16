@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import SelectExerciseView from '@/views/SelectExercise/SelectExerciseView.vue';
-import ExerciseView from '@/views/ExerciseView/ExerciseView.vue';
-import SigninView from '@/views/SigninView/SigninView.vue';
-import CalenderGroupView from '@/views/CalenderGroupView/CalenderGroupView.vue';
-import WorkoutDayView from '@/views/WorkoutDayView/ WorkoutDayView.vue';
-import CalenderExerciseView from '@/views/CalenderExerciseView/CalenderExerciseView.vue';
+import SelectExerciseView from '@/views/SelectExerciseView.vue';
+import ExerciseView from '@/views/ExerciseView.vue';
+import SigninView from '@/views/SigninView.vue';
+import CalenderGroupView from '@/views/CalenderGroupView.vue';
+import WorkoutDayView from '@/views/WorkoutDayView.vue';
+import CalenderExerciseView from '@/views/CalenderExerciseView.vue';
 import { useUserStore } from '@/stores/user.store';
 import { storeToRefs } from 'pinia';
 import { useToastStore } from '@/stores/toast.store';
@@ -13,8 +13,10 @@ import {
   signInFailedToast,
   signInSuccessToast,
 } from '@/utils/helpers/toasts.helpers';
-import StatisticsView from '@/views/StatisticsView/StatisticsView.vue';
-import SettingsGroupView from '@/views/SettingsGroup/SettingsGroupView.vue';
+import StatisticsView from '@/views/StatisticsView.vue';
+import SettingsGroupView from '@/views/SettingsGroupView.vue';
+import SettingsExerciseView from '@/views/SettingsExerciseView.vue';
+import SettingsUserView from '@/views/SettingsUserView.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -69,8 +71,18 @@ const router = createRouter({
     },
     {
       path: '/settings/group',
-      name: 'group',
+      name: 'group-settings',
       component: SettingsGroupView,
+    },
+    {
+      path: '/settings/exercise',
+      name: 'exercise-settings',
+      component: SettingsExerciseView,
+    },
+    {
+      path: '/settings/user',
+      name: 'user-settings',
+      component: SettingsUserView,
     },
 
     {

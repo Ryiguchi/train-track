@@ -15,8 +15,10 @@ export function useGroups() {
       exercise => exercise.slug === convertedSlug
     );
 
+    if (!exercise) return;
+
     const color = groups.value.find(
-      group => group.name === exercise?.group
+      group => group.name === exercise.group.name
     )?.color;
 
     return color;

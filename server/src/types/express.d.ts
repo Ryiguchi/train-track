@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, User, Express } from 'express';
-import { SessionData } from 'express-session';
+import { Session, SessionData } from 'express-session';
 
 export {};
 
@@ -25,7 +25,7 @@ declare global {
     next: NextFunction
   ) => void;
 
-  interface ISessionWithPassport extends SessionData {
+  interface ISessionWithPassport extends Session {
     passport: {
       user: IUserLoginReturnData;
     };

@@ -5,15 +5,15 @@ import type { Group, Schedule } from '@/lib/graphQL/gql/graphql';
  * @param dayNum: number // the day of the week as a number - 0 & Sunday basedLoginForm
  * @returns: number // the day of the week as a number - 1 & Monday based
  */
-export const convertDayOfWeek = (dayNum: number) => {
+export function convertDayOfWeek(dayNum: number) {
   if (dayNum === 0) {
     return 6;
   } else {
     return dayNum - 1;
   }
-};
+}
 
-export const convertDateToCalenderFormat = (date: string) => {
+export function convertDateToCalenderFormat(date: string) {
   const newDate = new Date(date);
   const monthName = newDate.toLocaleString('default', { month: 'long' });
   const day = newDate.getDate();
@@ -29,9 +29,9 @@ export const convertDateToCalenderFormat = (date: string) => {
   }
 
   return `${monthName} ${formattedDay}`;
-};
+}
 
-export const getDate = (direction: string, date: string) => {
+export function getDate(direction: string, date: string) {
   const current = new Date(date);
 
   let month = current.getMonth();
@@ -53,18 +53,18 @@ export const getDate = (direction: string, date: string) => {
   const monthName = tempDate.toLocaleString('default', { month: 'long' });
 
   return `${monthName} ${year}`;
-};
+}
 
 // GETTING THE CALENDER DATA FOR EACH MONTH
 // date formatt must be "yyyy-mm"
-export const filterScheduleData = (scheduleData: Schedule[], date: string) => {
+export function filterScheduleData(scheduleData: Schedule[], date: string) {
   return scheduleData.filter(event => event.date.startsWith(date));
-};
+}
 
-export const convertToCalenderData = (
+export function convertToCalenderData(
   scheduleData: Schedule[],
   legendItems: ICalenderLegendItem[]
-) => {
+) {
   const calenderData = scheduleData.map(event => {
     return {
       day: +event.date.slice(-2),
@@ -73,24 +73,24 @@ export const convertToCalenderData = (
   });
 
   return calenderData;
-};
+}
 /**
  *
  * @param date "October 2023"
  */
-export const getCalenderData = (
+export function getCalenderData(
   date: string,
   schedule: Schedule[],
   legend: Group[]
-) => {
+) {
   const filteredScheduleData = filterScheduleData(schedule, date);
 
   const calenderData = convertToCalenderData(filteredScheduleData, legend);
 
   return calenderData;
-};
+}
 
-export const getCalenderDaysArray = () => {
+export function getCalenderDaysArray() {
   const date = 'October 2023';
   const displayedDate = new Date('October 2023');
 
@@ -124,9 +124,9 @@ export const getCalenderDaysArray = () => {
   for (let i = 1; i <= 42 - daysCurrentLength; i++) {
     days.push(i);
   }
-};
+}
 
-export const getPrevMonthLastDayNum = (displayedDate: string) => {
+export function getPrevMonthLastDayNum(displayedDate: string) {
   const timestamp = new Date(displayedDate).setDate(0);
   const lastDayOfPrevMonth = new Date(timestamp);
 
@@ -137,16 +137,23 @@ export const getPrevMonthLastDayNum = (displayedDate: string) => {
     prevDayNum,
     prevWeekdayNum,
   };
-};
+}
 
-export const getDaysInMonth = (date: string) => {
+export function getDaysInMonth(date: string) {
   const timestamp = new Date(date).setDate(0) + 3000000000;
   const lastDay = new Date(timestamp).setDate(0);
   const lastDayNum = new Date(lastDay).getDate();
 
   return lastDayNum;
-};
+}
 
-export const getFullISODate = (monthISO: string, day: number) => {
+export function getFullISODate(monthISO: string, day: number) {
   return `${monthISO}-${day.toString().padStart(2, '0')}`;
-};
+}
+
+export function getMonthAbreviationFromIndex(index: number) {
+  const newDate = new Date(2000, index, 1);
+  return newDate.toLocaleString('en-US', {
+    month: 'short',
+  });
+}

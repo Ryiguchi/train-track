@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { hashPassword } from '../utils/bcryptjs.utils';
+import { hashPassword, verifyPassword } from '../utils/bcryptjs.utils';
 import { prisma } from '../config/prisma.config';
 import passport from 'passport';
 import {
@@ -92,5 +92,29 @@ export async function validateSession(req: Request, res: Response) {
     sendAxiosResponse(res, userData);
   } else {
     sendAxiosError(res, 'You are not logged in!', 401);
+  }
+}
+
+export async function isPasswordValid(password: string, userId: number) {
+  try {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      throw new Error('No user found! Login and try again!');
+    }
+
+    if (!user.password) {
+      throw new Error(
+        'Did you sign up with Google? If so, you can not perform this action!'
+      );
+    }
+
+    const hashedPassword = user.password;
+
+    const isPasswordValid = await verifyPassword(password, hashedPassword);
+
+    return isPasswordValid;
+  } catch (error: any) {
+    throw error;
   }
 }

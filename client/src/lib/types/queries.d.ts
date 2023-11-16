@@ -18,15 +18,13 @@ export {};
 
 declare global {
   interface TExerciseReturn
-    extends Pick<
-      UseQueryState,
-      'data' | 'error' | 'fetching' | 'executeQuery'
-    > {
+    extends Pick<UseQueryState, 'data' | 'error' | 'fetching'> {
     exercises: ComputedRef<Exercise[]>;
     groups: ComputedRef<IGroupWithEnum[]>;
     groupNames: ComputedRef<string[]>;
     isTodaysGroupSet: ComputedRef<boolean>;
     exerciseNames: ComputedRef<string[]>;
+    refreshExercises: () => void;
   }
 
   type TUsePreviosQueryReturn = {

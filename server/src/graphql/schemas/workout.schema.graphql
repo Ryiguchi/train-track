@@ -17,6 +17,8 @@ type Workout {
   date: String!
   sets: [Set!]!
   exercise: String!
+  totalWeight: Int!
+  totalReps: Int!
 }
 
 type Query {

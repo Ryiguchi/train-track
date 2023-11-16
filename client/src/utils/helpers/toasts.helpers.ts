@@ -55,12 +55,31 @@ export function signInFailedToast(error: string) {
   return failedToast(extractErrorMessage(error));
 }
 
+// SIGNOUT
+export const signOutSuccessToast = successToast(
+  'You have successfully logged out!'
+);
+
+export function signOutFailedToast(error: string) {
+  return failedToast(extractErrorMessage(error));
+}
+
 // ADD EXERCISE
 export const addExerciseSuccessToast = successToast(
-  'Your exercise was successfully added!'
+  'Your exercise was successfully added/updated!'
 );
 
 export function addExerciseFailedToast(error: any) {
+  return failedToast(extractErrorMessage(error));
+}
+
+// DELETE EXERCISE
+
+export const deleteExerciseSuccessToast = successToast(
+  'Your exercise has been successfully deleted!'
+);
+
+export function deleteExerciseFailedToast(error: any) {
   return failedToast(extractErrorMessage(error));
 }
 
@@ -97,5 +116,14 @@ export const deleteGroupSuccessToast = successToast(
 );
 
 export function deleteGroupFailedToast(error: any) {
+  return failedToast(extractErrorMessage(error));
+}
+
+// UPDATE NAME
+export function updateUserSuccessToast(userDataType: string) {
+  return successToast(`Your ${userDataType} has been successfully updated!`);
+}
+
+export function updateUserFailedToast(error: any) {
   return failedToast(extractErrorMessage(error));
 }

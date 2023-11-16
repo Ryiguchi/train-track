@@ -17,6 +17,8 @@ onMounted(async () => {
   const url = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/validateSession`;
   const response = await ax.post(url, {}, { withCredentials: true });
 
+  console.log(response.data.data);
+
   setUser(response.data.data);
 
   if (response.data.data && route.name === 'signin') {
@@ -39,23 +41,7 @@ onMounted(async () => {
 <style lang="sass">
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap')
 
-*
-  box-sizing: border-box
-  margin: 0
-  padding: 0
 
-html
-  font-family: 'Inter'
-  font-size: 62.5%
-
-body
-  background-color: $c-dk
-  padding: 0 $sp_6
-  max-width: 40rem
-  margin: 0 auto
-
-main
-  margin-top: $sp_6
 
 .route-enter-from
   opacity: 0

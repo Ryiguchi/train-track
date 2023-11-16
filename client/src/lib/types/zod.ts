@@ -31,6 +31,10 @@ export const exerciseDataValidator = z.object({
   groupId: isId,
 });
 
+export const updateExerciseDataValidator = exerciseDataValidator.extend({
+  id: isId,
+});
+
 export const todaysGroupDataValidator = z.object({
   groupId: isId,
   date: z.string().datetime(),
@@ -46,7 +50,7 @@ export const setsValidator = z.object({
 export const addWorkoutValidator = z.object({
   date: z.string().datetime(),
   exerciseId: isId,
-  sets: z.array(setsValidator),
+  sets: z.array(setsValidator).nonempty('There is no workout data to save!'),
 });
 
 export const credentialsValidator = z.object({
@@ -72,4 +76,21 @@ export const newGroupValidator = z.object({
 
 export const editGroupValidator = newGroupValidator.extend({
   id: isId,
+});
+
+export const userReturnTypeValidator = z.object({
+  id: z.number(),
+  name: z.string().nullable(),
+  email: z.string().nullable(),
+});
+
+export const updateEmailInputValidator = z.object({
+  email: isValidEmail,
+  password: isPassword,
+});
+
+export const updatePasswordInputValidator = z.object({
+  newPassword: isPassword,
+  confirmPassword: isPassword,
+  oldPassword: isPassword,
 });

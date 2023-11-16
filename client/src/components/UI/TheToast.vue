@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import IconClose from '../icons/IconClose.vue';
-import IconToastFailed from '@/components/icons/IconToastFailed.vue';
-import IconToastLoading from '@/components/icons/IconToastLoading.vue';
-import IconToastSuccess from '@/components/icons/IconToastSuccess.vue';
+import IconClose from '../Icon/IconClose.vue';
+import IconToastFailed from '@/components/Icon/IconToastFailed.vue';
+import IconToastLoading from '@/components/Icon/IconToastLoading.vue';
+import IconToastSuccess from '@/components/Icon/IconToastSuccess.vue';
 import { EToastType } from '@/lib/types/enums';
 import { useToastStore } from '@/stores/toast.store';
 import { storeToRefs } from 'pinia';
 
+// STORE
 const { toast } = storeToRefs(useToastStore());
 </script>
 

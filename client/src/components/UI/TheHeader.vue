@@ -1,40 +1,31 @@
 <script setup lang="ts">
-import IconLeftArrow from '../icons/IconLeftArrow.vue';
-import IconCalender from '../icons/IconCalender.vue';
-import IconCalenderSearch from '../icons/IconCalenderSearch.vue';
-import IconHome from '../icons/IconHome.vue';
+import IconLeftArrow from '../Icon/IconLeftArrow.vue';
+import IconCalender from '../Icon/IconCalender.vue';
+import IconHome from '../Icon/IconHome.vue';
+import IconHamburger from '../Icon/IconHamburger.vue';
+import IconStatistics from '@/components/Icon/IconStatistics.vue';
+import TheMobileMenu from './TheMobileMenu.vue';
 
 import { useRouter, useRoute } from 'vue-router';
 import { computed, ref } from 'vue';
-
 import { storeToRefs } from 'pinia';
-import { useUserStore } from '@/stores/user.store';
 
-import { useHeaderButton, useShowIcons } from '@/utils/composables/useHeader';
-import { useAxios } from '@/utils/composables/useAxios';
+import { useUserStore } from '@/stores/user.store';
 
 // USER STORE
 const { isSignedIn } = storeToRefs(useUserStore());
-const { setUser } = useUserStore();
 
 // ROUTER
 const router = useRouter();
-const route = ref(useRoute());
+const route = useRoute();
 
-// COMPOSABLES
-const { axios, pending, success, error } = useAxios();
-
-const {
-  showIconLeftArrow,
-  showIconCalender,
-  showIconCalenderSearch,
-  showIconHome,
-} = useShowIcons(route);
-
-const { buttonColor, buttonText } = useHeaderButton(isSignedIn);
+// REFS
+const isMenuOpen = ref(false);
 
 const calenderExercisePath = computed(() => {
-  return `/calender/${route.value.params ? route.value.params.slug : ''}`;
+  return route.name === 'exercise'
+    ? `/calender/${route.params.slug}`
+    : '/calender';
 });
 
 // FUNCTIONS
@@ -42,41 +33,38 @@ function goBack() {
   router.go(-1);
 }
 
-async function handleOnClick() {
-  const url = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/signout`;
-  await axios(url);
+function openMenu() {
+  isMenuOpen.value = true;
+}
 
-  if (success.value) {
-    setUser(null);
-    router.replace('/signin');
-  }
-
-  if (error.value) {
-    console.log(error);
-  }
+function closeMenu() {
+  isMenuOpen.value = false;
 }
 </script>
 
 <template>
-  <header>
-    <div><IconLeftArrow @click="goBack" v-if="showIconLeftArrow" /></div>
-    <div class="left-side">
-      <nav>
-        <RouterLink to="/calender" v-if="showIconCalender">
-          <IconCalender />
-        </RouterLink>
-        <RouterLink :to="calenderExercisePath" v-if="showIconCalenderSearch">
-          <IconCalenderSearch />
-        </RouterLink>
-        <RouterLink to="/" v-if="showIconHome">
+  <header v-if="isSignedIn">
+    <div class="center"><IconLeftArrow @click="goBack" /></div>
+    <div class="left-side center">
+      <nav class="center">
+        <RouterLink to="/">
           <IconHome />
         </RouterLink>
-        <base-button v-if="isSignedIn" color="ghost" @click="handleOnClick"
-          >sign out</base-button
-        >
+        <RouterLink :to="calenderExercisePath">
+          <IconCalender />
+        </RouterLink>
+        <RouterLink to="/statistics">
+          <IconStatistics />
+        </RouterLink>
       </nav>
     </div>
+    <div class="center" @click="openMenu">
+      <IconHamburger />
+    </div>
   </header>
+  <Transition name="menu">
+    <TheMobileMenu :isMenuOpen="isMenuOpen" @closeMenu="closeMenu" />
+  </Transition>
 </template>
 
 <style scoped lang="sass">
@@ -88,16 +76,23 @@ header
   align-content: center
   justify-content: space-between
 
-  div
-    display: flex
-    align-content: center
-
   .left-side
     gap: $sp_2
 
   nav
-    display: flex
-    align-content: center
-    gap: $sp_2
+    gap: $sp_4
+
+.menu-enter-from,
+.menu-leave-to
+  transform: translateX(100%)
+
+.menu-enter-to,
+.menu-leave-from
+  transform: translateX(0)
+
+.menu-enter-active
+  transition: all .3s
+.menu-leave-active
+  transition: all .3s ease-out
 </style>
 @/lib/composables/header.composables@/lib/composables/axios.composables

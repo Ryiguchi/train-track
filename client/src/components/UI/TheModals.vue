@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { useModalsStore } from '@/stores/modals.store';
 import { storeToRefs } from 'pinia';
-import ModalSelectGroup from '../modals/ModalSelectGroup.vue';
-import ModalAddExercise from '../modals/ModalAddExercise.vue';
+import ModalSelectGroup from '../Modal/ModalSelectGroup.vue';
+import ModalAddExercise from '../Modal/ModalAddExercise.vue';
 import { computed } from 'vue';
 
+// HOOKS
 const { closeAllModals } = useModalsStore();
 const { isSetDailyGroupModalOpen, isAddExerciseModalOpen } = storeToRefs(
   useModalsStore()
 );
 
+// REFS
 const someModalIsOpen = computed(() => {
   return isSetDailyGroupModalOpen.value || isAddExerciseModalOpen.value;
 });
@@ -24,19 +26,12 @@ const someModalIsOpen = computed(() => {
   </Transition>
   <Transition name="modal">
     <base-modal v-if="isAddExerciseModalOpen">
-      <ModalAddExercise />
+      <ModalAddExercise @closeModal="closeAllModals" />
     </base-modal>
   </Transition>
 </template>
 
 <style scoped lang="sass">
 .overlay
-  position: absolute
-  top: 0
-  left: 0
-  width: 100vw
-  height: 100vh
-  background-color: rgba(0, 0, 0, .1)
-  z-index: 50
-  backdrop-filter:  blur(2px) brightness(50%)
+  @include overlay
 </style>
