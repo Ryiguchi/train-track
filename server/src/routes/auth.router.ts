@@ -27,7 +27,7 @@ authRouter.get(
     failureRedirect: `${
       process.env.NODE_ENV === 'development'
         ? process.env.CLIENT_URL_DEV
-        : process.env.CLIELNT_URL_PROD
+        : process.env.CLIENT_URL_PROD
     }/google-failed`,
   }),
   function (req, res) {
@@ -35,7 +35,7 @@ authRouter.get(
       `${
         process.env.NODE_ENV === 'development'
           ? process.env.CLIENT_URL_DEV
-          : process.env.CLIELNT_URL_PROD
+          : process.env.CLIENT_URL_PROD
       }/google-success`
     );
   }

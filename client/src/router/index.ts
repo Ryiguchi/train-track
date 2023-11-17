@@ -6,6 +6,8 @@ import SigninView from '@/views/SigninView.vue';
 import CalenderGroupView from '@/views/CalenderGroupView.vue';
 import WorkoutDayView from '@/views/WorkoutDayView.vue';
 import CalenderExerciseView from '@/views/CalenderExerciseView.vue';
+import NotFoundView from '@/views/NotFoundView.vue';
+
 import { useUserStore } from '@/stores/user.store';
 import { storeToRefs } from 'pinia';
 import { useToastStore } from '@/stores/toast.store';
@@ -96,6 +98,7 @@ const router = createRouter({
       name: 'signin',
       component: SigninView,
     },
+    { path: '/:pathMatch(.*)', component: NotFoundView },
   ],
 });
 
