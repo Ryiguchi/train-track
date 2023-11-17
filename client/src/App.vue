@@ -17,8 +17,6 @@ onMounted(async () => {
   const url = `${import.meta.env.VITE_SERVER_BASE_URL}/auth/validateSession`;
   const response = await ax.post(url, {}, { withCredentials: true });
 
-  console.log(response.data.data);
-
   setUser(response.data.data);
 
   if (response.data.data && route.name === 'signin') {

@@ -1,6 +1,5 @@
 import { ax } from '@/config/axios.config';
 import { isAxiosFailedResponse } from '@/lib/types/predicates';
-import { isAxiosError } from 'axios';
 import { ref } from 'vue';
 
 export function useAxios() {

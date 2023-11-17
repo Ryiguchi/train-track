@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Workout } from '@prisma/client';
 import {
   dummyExercises,
   dummyGroups,

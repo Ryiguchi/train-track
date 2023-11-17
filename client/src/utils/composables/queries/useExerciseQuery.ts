@@ -1,5 +1,5 @@
 import { useQuery } from '@urql/vue';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 import { EXERCISES_AND_GROUPS_QUERY } from '@/lib/graphQL/queries';
 import { useCalenderStore } from '@/stores/calender.store';
 

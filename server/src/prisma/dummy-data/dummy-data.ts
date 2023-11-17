@@ -88,7 +88,7 @@ const getWorkoutItem = (date: Date) => {
 };
 
 export const getWorkouts = (dates: Date[]) => {
-  let workouts: IAddWorkoutInput[] = [];
+  let workouts: ICreateWorkoutData[] = [];
 
   dates.forEach(date => {
     for (let i = 0; i < 8; i++) workouts.push(getWorkoutItem(date));

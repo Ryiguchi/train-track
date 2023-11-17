@@ -14,4 +14,16 @@ declare global {
     createdAt: string;
     updatedAt: string;
   }
+
+  interface ICreateWorkoutData {
+    userId: number;
+    exerciseId: number;
+    date: Date;
+    sets: {
+      id: string;
+      setNum: number;
+      weight: number;
+      reps: number;
+    }[];
+  }
 }

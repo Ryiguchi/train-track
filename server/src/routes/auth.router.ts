@@ -24,10 +24,20 @@ authRouter.get(
 authRouter.get(
   '/google/callback',
   passport.authenticate('google', {
-    failureRedirect: 'http://localhost:5173/google-failed',
+    failureRedirect: `${
+      process.env.NODE_ENV === 'development'
+        ? process.env.CLIENT_URL_DEV
+        : process.env.CLIELNT_URL_PROD
+    }/google-failed`,
   }),
   function (req, res) {
-    res.redirect('http://localhost:5173/google-success');
+    res.redirect(
+      `${
+        process.env.NODE_ENV === 'development'
+          ? process.env.CLIENT_URL_DEV
+          : process.env.CLIELNT_URL_PROD
+      }/google-success`
+    );
   }
 );
 

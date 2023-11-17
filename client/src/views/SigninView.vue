@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import SigninForm from '@/components/SignIn/SigninForm.vue';
 
-import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/stores/user.store';
 
 import { useRouter } from 'vue-router';
@@ -17,7 +16,6 @@ const router = useRouter();
 
 // STORE
 const { setUser } = useUserStore();
-const { isSignedIn, user } = storeToRefs(useUserStore());
 const { showToast } = useToastStore();
 
 // COMPOSABLES

@@ -7,6 +7,7 @@ export const corsOptions: CorsOptions = {
     'http://localhost:8000/auth/google/callback',
     'https://accounts.google.com',
     'http://localhost:5173',
+    'https://traintrack.ryaniguchi.com',
   ],
   credentials: true,
 };

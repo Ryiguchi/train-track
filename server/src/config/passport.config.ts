@@ -10,7 +10,7 @@ const callbackURL = `${
   process.env.NODE_ENV === 'development'
     ? process.env.BASE_URL_DEV
     : process.env.BASE_URL_PROD
-}:${process.env.PORT}/auth/google/callback`;
+}/auth/google/callback`;
 
 export function passportConfig(passport: passport.PassportStatic) {
   passport.use(
@@ -75,7 +75,7 @@ export function passportConfig(passport: passport.PassportStatic) {
       {
         clientID: process.env.OAUTH_CLIENT_ID!,
         clientSecret: process.env.OAUTH_CLIENT_SECRET!,
-        callbackURL: 'http://localhost:3000/auth/google/callback',
+        callbackURL: callbackURL,
       },
       async function (acessToken, refreshToken, profile, done) {
         try {
