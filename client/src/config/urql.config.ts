@@ -1,8 +1,7 @@
-import { graphQlUrl } from '@/utils/helpers/api.helpers';
 import { cacheExchange, fetchExchange, type ClientOptions } from '@urql/vue';
 
 export const urqlClientOptions: ClientOptions = {
-  url: graphQlUrl,
+  url: import.meta.env.VITE_GRAPHQL_URL,
   exchanges: [cacheExchange, fetchExchange],
   fetchOptions: {
     credentials: 'include',
