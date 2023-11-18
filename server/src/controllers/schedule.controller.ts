@@ -1,6 +1,8 @@
 import { prisma } from '../config/prisma.config';
 import {
-  ScheduleInput,
+  AddScheduleInput,
+  MutationAddScheduleDayArgs,
+  MutationUpdateScheduleDayArgs,
   Schedule,
   UpdateScheduleInput,
 } from '../types/resolvers-types';
@@ -32,12 +34,12 @@ export async function checkIsTodaysGroupSet(userId: number) {
   }
 }
 
-export async function addScheduleDay(
-  scheduleData: ScheduleInput,
-  userId: number
-) {
+export async function addScheduleDay({
+  addScheduleData,
+  userId,
+}: MutationAddScheduleDayArgs) {
   const data = {
-    ...scheduleData,
+    ...addScheduleData,
     userId,
   };
 
@@ -48,13 +50,13 @@ export async function addScheduleDay(
   return newScheduleDay as unknown as Schedule;
 }
 
-export async function upadteScheduleDay(
-  fieldsToUpdate: UpdateScheduleInput,
-  userId: number
-) {
+export async function upadteScheduleDay({
+  updateScheduleData,
+  userId,
+}: MutationUpdateScheduleDayArgs) {
   const updatedSchedule = await prisma.schedule.update({
-    where: { id: fieldsToUpdate.id, userId },
-    data: fieldsToUpdate,
+    where: { id: updateScheduleData.id, userId },
+    data: updateScheduleData,
     include: { group: true },
   });
 

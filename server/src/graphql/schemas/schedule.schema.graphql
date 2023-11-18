@@ -5,11 +5,11 @@ type Schedule {
 }
 
 type Query {
-  scheduleByUserId: [Schedule!]
-  isTodaysGroupSet: Boolean
+  scheduleByUserId(userId: Int!): [Schedule!]
+  isTodaysGroupSet(userId: Int!): Boolean
 }
 
-input ScheduleInput {
+input AddScheduleInput {
   date: String!
   groupId: Int!
 }
@@ -20,6 +20,9 @@ input UpdateScheduleInput {
 }
 
 type Mutation {
-  addScheduleDay(scheduleData: ScheduleInput!): Schedule
-  updateScheduleDay(fieldsToUpdate: UpdateScheduleInput!): Schedule
+  addScheduleDay(addScheduleData: AddScheduleInput!, userId: Int!): Schedule
+  updateScheduleDay(
+    updateScheduleData: UpdateScheduleInput!
+    userId: Int!
+  ): Schedule
 }

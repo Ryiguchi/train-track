@@ -8,18 +8,15 @@ import {
 
 export const groupResolvers: Resolvers = {
   Query: {
-    groupsByUserId: async (parent, args, { req }) =>
-      await getGroupsByUserId(req.userId),
+    groupsByUserId: async (parent, args) =>
+      await getGroupsByUserId(args.userId),
   },
 
   Mutation: {
-    addGroup: async (parent, args, { req }) =>
-      await addGroup(args.addGroupData, req.userId),
+    addGroup: async (parent, args) => await addGroup(args),
 
-    deleteGroup: async (parent, args, { req }) =>
-      await deleteGroup(args.id, req.userId),
+    deleteGroup: async (parent, args) => await deleteGroup(args),
 
-    updateGroup: async (parent, args, { req }) =>
-      await updateGroup(args.updateGroupData, req.userId),
+    updateGroup: async (parent, args) => await updateGroup(args),
   },
 };

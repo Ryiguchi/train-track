@@ -11,6 +11,7 @@ import { passportConfig } from './config/passport.config';
 import session from 'express-session';
 import { sessionOptions } from './config/express-session.config';
 import { contextMiddleware } from './middleware/context.middleware';
+import helmet from 'helmet';
 
 passportConfig(passport);
 
@@ -20,6 +21,8 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// app.set('trust proxy', 1);
+app.use(helmet());
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.json({ limit: '10kb' }));

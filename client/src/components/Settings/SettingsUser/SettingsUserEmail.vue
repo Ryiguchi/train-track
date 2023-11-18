@@ -25,7 +25,7 @@ const {
 } = useMutation(UPDATE_USER_EMAIL);
 
 // STORE
-const { setUser } = useUserStore();
+const { setUser, userId } = useUserStore();
 const { showToast } = useToastStore();
 
 // HOOKS
@@ -53,7 +53,7 @@ async function handleSubmit() {
   try {
     const validInput = updateEmailInputValidator.parse(input);
 
-    await updateEmail({ userData: validInput });
+    await updateEmail({ updateEmailData: validInput, userId });
 
     if (error.value) {
       throw error.value;

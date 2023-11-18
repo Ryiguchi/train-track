@@ -74,6 +74,7 @@ export function signout(req: Request, res: Response) {
         'There was an error logging you out. Please try again.'
       );
     } else {
+      res.clearCookie('connect.sid');
       sendAxiosResponse(res, null, 204);
     }
   });
@@ -118,3 +119,9 @@ export async function isPasswordValid(password: string, userId: number) {
     throw error;
   }
 }
+
+// export  function verifyUser(req: Request, args: any) {
+//   if (args.userId) {
+
+//   } else if
+// }

@@ -1,4 +1,9 @@
-import { cacheExchange, fetchExchange, type ClientOptions } from '@urql/vue';
+import {
+  cacheExchange,
+  fetchExchange,
+  type ClientOptions,
+  Client,
+} from '@urql/vue';
 
 export const urqlClientOptions: ClientOptions = {
   url: import.meta.env.VITE_GRAPHQL_URL,
@@ -7,3 +12,5 @@ export const urqlClientOptions: ClientOptions = {
     credentials: 'include',
   },
 };
+
+export const urqlClient = new Client(urqlClientOptions);

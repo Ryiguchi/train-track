@@ -26,4 +26,14 @@ declare global {
       reps: number;
     }[];
   }
+
+  interface IArgsIsUserId {
+    userId: number;
+  }
+
+  interface IArgsHasUserId {
+    [key: string]: {
+      userId: number;
+    };
+  }
 }

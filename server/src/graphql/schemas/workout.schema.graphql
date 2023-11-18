@@ -22,8 +22,8 @@ type Workout {
 }
 
 type Query {
-  workoutsByUserId: [Workout!]
-  previousWorkout(exerciseId: Int!): Workout
+  workoutsByUserId(userId: Int!): [Workout!]
+  previousWorkout(exerciseId: Int!, userId: Int!): Workout
 }
 
 input AddWorkoutInput {
@@ -33,8 +33,8 @@ input AddWorkoutInput {
 }
 
 type Mutation {
-  addWorkout(workoutData: AddWorkoutInput!): Workout
-  deleteWorkout(id: Int!): DeletedWorkout
+  addWorkout(addWorkoutData: AddWorkoutInput!, userId: Int!): Workout
+  deleteWorkout(id: Int!, userId: Int!): DeletedWorkout
 }
 
 type DeletedWorkout {

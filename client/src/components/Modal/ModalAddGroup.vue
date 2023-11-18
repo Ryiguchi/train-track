@@ -16,6 +16,7 @@ import {
 
 import { newGroupValidator, editGroupValidator } from '@/lib/types/zod';
 import { EColors } from '@/lib/types/enums';
+import { useUserStore } from '@/stores/user.store';
 
 // PROPS
 const { mode, groupToEdit } = defineProps<{
@@ -30,6 +31,7 @@ const emits = defineEmits<{
 
 // STORE
 const { showToast } = useToastStore();
+const { userId } = useUserStore();
 
 // QUERY
 const { groups } = useExercisesQuery();
@@ -99,7 +101,7 @@ async function saveGroup() {
     if (mode === 'new') {
       const validatedGroupData = newGroupValidator.parse(groupData);
 
-      await addGroup({ addGroupData: validatedGroupData });
+      await addGroup({ addGroupData: validatedGroupData, userId });
     }
     // EDIT GROUP
     if (mode === 'edit') {
@@ -110,7 +112,7 @@ async function saveGroup() {
       };
       const validatedEditGroupData = editGroupValidator.parse(groupToEditData);
 
-      await updateGroup({ updateGroupData: validatedEditGroupData });
+      await updateGroup({ updateGroupData: validatedEditGroupData, userId });
     }
 
     if (dataAdd.value || dataUpdate.value) {

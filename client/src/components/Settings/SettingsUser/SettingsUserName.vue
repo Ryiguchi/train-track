@@ -7,7 +7,10 @@ import { useMutation } from '@urql/vue';
 import { UPDATE_USER_NAME } from '@/lib/graphQL/queries';
 import { z } from 'zod';
 import { useUserStore } from '@/stores/user.store';
-import { userReturnTypeValidator } from '@/lib/types/zod';
+import {
+  userReturnTypeValidator,
+  updateNameInputValidator,
+} from '@/lib/types/zod';
 import { useToastStore } from '@/stores/toast.store';
 import {
   updateUserSuccessToast,
@@ -23,7 +26,7 @@ const {
 } = useMutation(UPDATE_USER_NAME);
 
 // STORE
-const { setUser } = useUserStore();
+const { setUser, userId } = useUserStore();
 const { showToast } = useToastStore();
 
 // HOOKS
@@ -39,12 +42,11 @@ function handleChangeNameValue(value: string) {
 
 async function handleSubmit() {
   try {
-    const validName = z
-      .string()
-      .min(1, '"Username" can not be empty!')
-      .parse(nameInputValue.value);
+    const validUpdateNameData = updateNameInputValidator.parse(
+      nameInputValue.value
+    );
 
-    await updateName({ name: validName });
+    await updateName({ name: validUpdateNameData, userId });
 
     if (error.value) {
       throw error.value;

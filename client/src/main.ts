@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import urql from '@urql/vue';
-import { urqlClientOptions } from './config/urql.config';
+import { urqlClient } from './config/urql.config';
 
 import Root from './App.vue';
 import router from './router';
@@ -15,7 +15,7 @@ import BaseInput from '@/components/Base/BaseInput.vue';
 
 const app = createApp(Root);
 
-app.use(urql, urqlClientOptions);
+app.use(urql, urqlClient);
 app.use(createPinia());
 app.use(router);
 

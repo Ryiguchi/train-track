@@ -16,7 +16,11 @@ export const sessionOptions = {
   resave: false,
   saveUninitialized: true,
   cookie: {
+    httpOnly: true,
     secure: isCookieSecure,
     maxAge: 24 * 60 * 60 * 1000,
+    // domain: '.ryaniguchi.com',
+    // sameSite: 'none' as 'none',
+    // path: '/',
   },
 };

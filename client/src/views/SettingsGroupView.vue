@@ -17,9 +17,11 @@ import {
 } from '@/utils/helpers/toasts.helpers';
 import { useConfirm } from '@/utils/composables/useConfirm';
 import { useSettingsModal } from '@/utils/composables/useSettingsModal';
+import { useUserStore } from '@/stores/user.store';
 
 // STORE
 const { showToast } = useToastStore();
+const { userId } = useUserStore();
 
 // QUERY
 const { groups } = useExercisesQuery();
@@ -53,7 +55,7 @@ const {
 async function handleConfirm() {
   try {
     if (confirmType.value === 'delete' && confirmGroupId.value) {
-      await deleteGroup({ id: confirmGroupId.value });
+      await deleteGroup({ id: confirmGroupId.value, userId });
     }
 
     if (data.value) {

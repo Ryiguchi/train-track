@@ -8,7 +8,7 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
-    "codegen": "graphql-codegen "
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@parcel/watcher": "^2.3.0",
@@ -23,8 +23,8 @@
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^5.0.0",
-    "@graphql-codegen/client-preset": "^4.1.0",
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/client-preset": "4.1.0",
     "@tsconfig/node18": "^18.2.2",
     "@types/node": "^18.18.5",
     "@types/uniqid": "^5.3.3",

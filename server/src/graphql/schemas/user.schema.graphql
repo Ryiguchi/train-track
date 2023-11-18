@@ -9,7 +9,7 @@ type User {
 }
 
 type Query {
-  userById: User!
+  userById(userId: Int!): User!
 }
 
 input UpdateEmailInput {
@@ -23,7 +23,7 @@ input UpdatePasswordInput {
 }
 
 type Mutation {
-  updateName(name: String!): User!
-  updateEmail(updateEmailInput: UpdateEmailInput!): User!
-  updatePassword(updatePasswordInput: UpdatePasswordInput!): User!
+  updateName(name: String!, userId: Int!): User!
+  updateEmail(updateEmailData: UpdateEmailInput!, userId: Int!): User!
+  updatePassword(updatePasswordData: UpdatePasswordInput!, userId: Int!): User!
 }

@@ -30,6 +30,7 @@ import {
   updateExerciseDataValidator,
 } from '@/lib/types/zod';
 import type { Exercise } from '@/lib/graphQL/gql/graphql';
+import { useUserStore } from '@/stores/user.store';
 
 // PROPS
 const { mode, exerciseToEdit } = defineProps({
@@ -53,6 +54,7 @@ const emits = defineEmits<{
 // STORE
 const enteredExercise = ref(exerciseToEdit ? exerciseToEdit.name : '');
 const { showToast } = useToastStore();
+const { userId } = useUserStore();
 
 // QUERY
 const { groupNames, refreshExercises } = useExercisesQuery();
@@ -112,7 +114,8 @@ async function handleSubmit(option: string) {
       const validExerciseData = exerciseDataValidator.parse(exerciseData);
 
       await addExercise({
-        exerciseData: validExerciseData,
+        addExerciseData: validExerciseData,
+        userId,
       });
     }
 
@@ -125,7 +128,7 @@ async function handleSubmit(option: string) {
       const validExerciseData =
         updateExerciseDataValidator.parse(exerciseDataWithId);
 
-      await updateExercise({ exerciseData: validExerciseData });
+      await updateExercise({ updateExerciseData: validExerciseData, userId });
     }
 
     if (errorAddingExercise.value) {
@@ -157,7 +160,7 @@ async function handleConfirmDelete() {
   if (!exerciseToEdit) return;
 
   try {
-    await deleteExercise({ id: exerciseToEdit.id });
+    await deleteExercise({ id: exerciseToEdit.id, userId });
 
     if (errorDeletingExercise.value) {
       throw errorDeletingExercise.value;

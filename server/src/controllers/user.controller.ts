@@ -10,8 +10,9 @@ import { EErrorActions, getPrismaErrorMessage } from '../utils/error.utils';
 import { hashPassword } from '../utils/bcryptjs.utils';
 import { isPasswordValid } from './auth.controller';
 import {
-  UpdateEmailInput,
-  UpdatePasswordInput,
+  MutationUpdateEmailArgs,
+  MutationUpdateNameArgs,
+  MutationUpdatePasswordArgs,
 } from '../types/resolvers-types';
 import { User } from '@prisma/client';
 
@@ -50,7 +51,10 @@ export async function getUserById(userId: number) {
   }
 }
 
-export async function updateUserName(name: string, req: ICustomRequest) {
+export async function updateUserName(
+  { name, userId }: MutationUpdateNameArgs,
+  req: ICustomRequest
+) {
   try {
     const userDataVerified = z
       .string()
@@ -58,7 +62,7 @@ export async function updateUserName(name: string, req: ICustomRequest) {
       .parse(name);
 
     const updatedUser = await prisma.user.update({
-      where: { id: req.userId },
+      where: { id: userId },
       data: { name: userDataVerified },
     });
 
@@ -79,14 +83,14 @@ export async function updateUserName(name: string, req: ICustomRequest) {
 }
 
 export async function updateUserEmail(
-  userData: UpdateEmailInput,
+  { updateEmailData, userId }: MutationUpdateEmailArgs,
   req: ICustomRequest
 ) {
   try {
-    const userDataValidated = updateEmailInputValidator.parse(userData);
+    const userDataValidated = updateEmailInputValidator.parse(updateEmailData);
 
     const updatedUser = await prisma.user.update({
-      where: { id: req.userId },
+      where: { id: userId },
       data: userDataValidated,
     });
 
@@ -98,7 +102,7 @@ export async function updateUserEmail(
       const errorMessage = getPrismaErrorMessage(
         error.code,
         EErrorActions.UPDATE_USER,
-        userData.email
+        updateEmailData.email
       );
       throw new GraphQLError(error.message);
     }
@@ -111,12 +115,13 @@ export async function updateUserEmail(
   }
 }
 
-export async function updateUserPassword(
-  userData: UpdatePasswordInput,
-  userId: number
-) {
+export async function updateUserPassword({
+  updatePasswordData,
+  userId,
+}: MutationUpdatePasswordArgs) {
   try {
-    const userDataValidated = updatePasswordInputValidator.parse(userData);
+    const userDataValidated =
+      updatePasswordInputValidator.parse(updatePasswordData);
 
     const isValidPassword = await isPasswordValid(
       userDataValidated.oldPassword,

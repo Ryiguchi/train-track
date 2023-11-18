@@ -21,6 +21,18 @@ const isValidEmail = z
   .email('The entered email is not valid. Please enter a valid email address.');
 // export const dateISOValidator = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 
+const isValidColorEnum = z
+  .string({
+    required_error: 'You must choose a color!',
+    invalid_type_error: 'You must choose a color!',
+  })
+  .refine(
+    data => {
+      return Object.values(EColors).includes(data as EColors);
+    },
+    { message: 'You must choose a color!' }
+  );
+
 export const exerciseDataValidator = z.object({
   name: z
     .string()
@@ -61,17 +73,7 @@ export const credentialsValidator = z.object({
 
 export const newGroupValidator = z.object({
   name: z.string().min(1),
-  color: z
-    .string({
-      required_error: 'You must choose a color!',
-      invalid_type_error: 'You must choose a color!',
-    })
-    .refine(
-      data => {
-        return Object.values(EColors).includes(data as EColors);
-      },
-      { message: 'You must choose a color!' }
-    ),
+  color: isValidColorEnum,
 });
 
 export const editGroupValidator = newGroupValidator.extend({
@@ -89,8 +91,19 @@ export const updateEmailInputValidator = z.object({
   password: isPassword,
 });
 
+export const updateNameInputValidator = z
+  .string()
+  .min(1, '"Username" can not be empty!');
+
 export const updatePasswordInputValidator = z.object({
   newPassword: isPassword,
   confirmPassword: isPassword,
   oldPassword: isPassword,
 });
+
+export const legendValidator = z.array(
+  z.object({
+    name: z.string().min(1),
+    color: isValidColorEnum,
+  })
+);

@@ -83,12 +83,14 @@ async function saveWorkout() {
       date: new Date().toISOString(),
       sets: sets.value,
       exerciseId: getIdFromSlug(slug),
-      userId,
     };
 
     const validWorkoutData = addWorkoutValidator.parse(workoutData);
 
-    const addedWorkout = await addWorkout({ workoutData: validWorkoutData });
+    const addedWorkout = await addWorkout({
+      addWorkoutData: validWorkoutData,
+      userId,
+    });
     showToast(addWorkoutSuccessToast);
     clearSets();
     router.push('/exercises');

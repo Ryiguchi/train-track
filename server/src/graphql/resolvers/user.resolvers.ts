@@ -13,17 +13,17 @@ export const userResolvers: Resolvers = {
   },
 
   Query: {
-    userById: async (parent, args, { req }) => await getUserById(req.userId),
+    userById: async (parent, args) => await getUserById(args.userId),
   },
 
   Mutation: {
     updateName: async (parent, args, { req }) =>
-      await updateUserName(args.name, req),
+      await updateUserName(args, req),
 
     updateEmail: async (parent, args, { req }) =>
-      await updateUserEmail(args.updateEmailInput, req),
+      await updateUserEmail(args, req),
 
     updatePassword: async (parent, args, { req }) =>
-      await updateUserPassword(args.updatePasswordInput, req.userId),
+      await updateUserPassword(args),
   },
 };

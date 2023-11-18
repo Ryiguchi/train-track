@@ -1,7 +1,9 @@
 import { prisma } from '../config/prisma.config';
 import {
-  AddWorkoutInput,
   DeletedWorkout,
+  MutationAddWorkoutArgs,
+  MutationDeleteWorkoutArgs,
+  QueryPreviousWorkoutArgs,
   Workout,
 } from '../types/resolvers-types';
 
@@ -25,9 +27,15 @@ export async function getWorkouts(userId: number) {
   return workoutsResults as unknown as Workout[];
 }
 
-export async function getPreviousWorkout(exerciseId: number, userId: number) {
+export async function getPreviousWorkout({
+  exerciseId,
+  userId,
+}: QueryPreviousWorkoutArgs) {
   const workout = await prisma.workout.findFirstOrThrow({
-    where: { exerciseId, userId },
+    where: {
+      exerciseId,
+      userId,
+    },
     orderBy: { date: 'desc' },
     select: selectOptions,
   });
@@ -35,9 +43,12 @@ export async function getPreviousWorkout(exerciseId: number, userId: number) {
   return workout as unknown as Workout;
 }
 
-export async function addWorkout(workoutData: AddWorkoutInput, userId: number) {
+export async function addWorkout({
+  addWorkoutData,
+  userId,
+}: MutationAddWorkoutArgs) {
   const data = {
-    ...workoutData,
+    ...addWorkoutData,
     userId,
   };
 
@@ -49,8 +60,10 @@ export async function addWorkout(workoutData: AddWorkoutInput, userId: number) {
   return addedWorkout as unknown as Workout;
 }
 
-export async function deleteWorkout(id: number, userId: number) {
-  const deletedWorkout = await prisma.workout.delete({ where: { id, userId } });
+export async function deleteWorkout({ id, userId }: MutationDeleteWorkoutArgs) {
+  const deletedWorkout = await prisma.workout.delete({
+    where: { id, userId },
+  });
 
   return deletedWorkout as unknown as DeletedWorkout;
 }

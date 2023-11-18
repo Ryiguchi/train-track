@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', {
     },
 
     userId(state) {
-      return state.user?.id;
+      return state.user ? state.user.id : 0;
     },
   },
 

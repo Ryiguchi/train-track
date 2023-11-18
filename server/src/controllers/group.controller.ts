@@ -1,7 +1,10 @@
-import { getPrismaClient } from '@prisma/client/runtime/library';
 import { prisma } from '../config/prisma.config';
 import { isPrismaError } from '../types/predicates';
-import { AddGroupInput, UpdateGroupInput } from '../types/resolvers-types';
+import {
+  MutationAddGroupArgs,
+  MutationDeleteGroupArgs,
+  MutationUpdateGroupArgs,
+} from '../types/resolvers-types';
 import { EErrorActions, getPrismaErrorMessage } from '../utils/error.utils';
 import { GraphQLError } from 'graphql';
 
@@ -11,7 +14,7 @@ export async function getGroupsByUserId(userId: number) {
   return groups;
 }
 
-export async function addGroup(addGroupData: AddGroupInput, userId: number) {
+export async function addGroup({ addGroupData, userId }: MutationAddGroupArgs) {
   const data = {
     ...addGroupData,
     userId,
@@ -25,7 +28,7 @@ export async function addGroup(addGroupData: AddGroupInput, userId: number) {
       const errorMessage = getPrismaErrorMessage(
         error.code,
         EErrorActions.ADD_GROUP,
-        data.name
+        addGroupData.name
       );
 
       throw new GraphQLError(errorMessage);
@@ -35,24 +38,19 @@ export async function addGroup(addGroupData: AddGroupInput, userId: number) {
   }
 }
 
-export async function updateGroup(
-  updateGroupData: UpdateGroupInput,
-  userId: number
-) {
-  const data = {
-    name: updateGroupData.name,
-    color: updateGroupData.color,
-  };
-
+export async function updateGroup({
+  updateGroupData,
+  userId,
+}: MutationUpdateGroupArgs) {
   const updatedGroup = await prisma.group.update({
     where: { userId, id: updateGroupData.id },
-    data,
+    data: updateGroupData,
   });
 
   return updatedGroup;
 }
 
-export async function deleteGroup(id: number, userId: number) {
+export async function deleteGroup({ id, userId }: MutationDeleteGroupArgs) {
   const deletedGroup = await prisma.group.delete({
     where: { id, userId },
   });

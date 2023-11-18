@@ -14,6 +14,7 @@ import {
   signOutSuccessToast,
   signOutFailedToast,
 } from '@/utils/helpers/toasts.helpers';
+import { urqlClient } from '@/config/urql.config';
 
 // PROPS
 defineProps<{

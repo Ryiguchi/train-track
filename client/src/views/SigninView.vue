@@ -54,6 +54,6 @@ async function handleSubmit(formData: ILoginFormData) {
 
 <style scoped lang="sass">
 main
-  margin-top: $sp_12
+  margin-top: 20rem
 </style>
 @/lib/composables/axios.composables @/lib/helpers/toasts.helpers

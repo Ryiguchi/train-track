@@ -3,8 +3,8 @@ import { graphql } from '@/lib/graphQL/gql';
 //QUERIES
 
 export const EXERCISES_AND_GROUPS_QUERY = graphql(/* GraphQL */ `
-  query ExercisesAndGroups {
-    exercises: exercisesByUserId {
+  query ExercisesAndGroups($userId: Int!) {
+    exercises: exercisesByUserId(userId: $userId) {
       id
       name
       slug
@@ -15,19 +15,19 @@ export const EXERCISES_AND_GROUPS_QUERY = graphql(/* GraphQL */ `
       }
     }
 
-    groups: groupsByUserId {
+    groups: groupsByUserId(userId: $userId) {
       id
       name
       color
     }
 
-    isTodaysGroupSet
+    isTodaysGroupSet(userId: $userId)
   }
 `);
 
 export const PREVIOUS_WORKOUT_QUERY = graphql(`
-  query PreviousWorkout($exerciseId: Int!) {
-    previousWorkout(exerciseId: $exerciseId) {
+  query PreviousWorkout($exerciseId: Int!, $userId: Int!) {
+    previousWorkout(exerciseId: $exerciseId, userId: $userId) {
       id
       date
       exercise
@@ -44,8 +44,8 @@ export const PREVIOUS_WORKOUT_QUERY = graphql(`
 `);
 
 export const WORKOUTS_QUERY = graphql(`
-  query Workouts {
-    workouts: workoutsByUserId {
+  query Workouts($userId: Int!) {
+    workouts: workoutsByUserId(userId: $userId) {
       id
       date
       exercise
@@ -61,9 +61,9 @@ export const WORKOUTS_QUERY = graphql(`
   }
 `);
 
-export const SCEDULE_QUERY = graphql(`
-  query Schedule {
-    schedule: scheduleByUserId {
+export const SCHEDULE_QUERY = graphql(`
+  query Schedule($userId: Int!) {
+    schedule: scheduleByUserId(userId: $userId) {
       id
       date
       group {
@@ -78,8 +78,8 @@ export const SCEDULE_QUERY = graphql(`
 // MUTATIONS
 
 export const ADD_EXERCISE = graphql(`
-  mutation AddExercise($exerciseData: ExerciseData!) {
-    addExercise(exerciseData: $exerciseData) {
+  mutation AddExercise($addExerciseData: AddExerciseInput!, $userId: Int!) {
+    addExercise(addExerciseData: $addExerciseData, userId: $userId) {
       id
       name
       slug
@@ -93,8 +93,11 @@ export const ADD_EXERCISE = graphql(`
 `);
 
 export const UPDATE_EXERCISE = graphql(`
-  mutation UpdateExercise($exerciseData: ExerciseDataWithId!) {
-    updateExercise(fieldsToUpdate: $exerciseData) {
+  mutation UpdateExercise(
+    $updateExerciseData: UpdateExerciseInput!
+    $userId: Int!
+  ) {
+    updateExercise(updateExerciseData: $updateExerciseData, userId: $userId) {
       id
       name
       slug
@@ -108,8 +111,8 @@ export const UPDATE_EXERCISE = graphql(`
 `);
 
 export const DELETE_EXERCISE = graphql(`
-  mutation DeleteExercise($id: Int!) {
-    deleteExercise(id: $id) {
+  mutation DeleteExercise($id: Int!, $userId: Int!) {
+    deleteExercise(id: $id, userId: $userId) {
       id
       name
       slug
@@ -119,8 +122,8 @@ export const DELETE_EXERCISE = graphql(`
 `);
 
 export const SET_TODAYS_GROUP = graphql(`
-  mutation SetTodaysGroup($scheduleData: ScheduleInput!) {
-    addScheduleDay(scheduleData: $scheduleData) {
+  mutation SetTodaysGroup($addScheduleData: AddScheduleInput!, $userId: Int!) {
+    addScheduleDay(addScheduleData: $addScheduleData, userId: $userId) {
       id
       date
       group {
@@ -133,8 +136,8 @@ export const SET_TODAYS_GROUP = graphql(`
 `);
 
 export const ADD_WORKOUT = graphql(`
-  mutation AddWorkout($workoutData: AddWorkoutInput!) {
-    addWorkout(workoutData: $workoutData) {
+  mutation AddWorkout($addWorkoutData: AddWorkoutInput!, $userId: Int!) {
+    addWorkout(addWorkoutData: $addWorkoutData, userId: $userId) {
       id
       date
       sets {
@@ -149,8 +152,8 @@ export const ADD_WORKOUT = graphql(`
 `);
 
 export const ADD_GROUP = graphql(`
-  mutation AddGroup($addGroupData: AddGroupInput!) {
-    addGroup(addGroupData: $addGroupData) {
+  mutation AddGroup($addGroupData: AddGroupInput!, $userId: Int!) {
+    addGroup(addGroupData: $addGroupData, userId: $userId) {
       id
       name
       color
@@ -159,8 +162,8 @@ export const ADD_GROUP = graphql(`
 `);
 
 export const UPDATE_GROUP = graphql(`
-  mutation UpdateGroup($updateGroupData: UpdateGroupInput!) {
-    updateGroup(updateGroupData: $updateGroupData) {
+  mutation UpdateGroup($updateGroupData: UpdateGroupInput!, $userId: Int!) {
+    updateGroup(updateGroupData: $updateGroupData, userId: $userId) {
       id
       name
       color
@@ -169,8 +172,8 @@ export const UPDATE_GROUP = graphql(`
 `);
 
 export const DELETE_GROUP = graphql(`
-  mutation DeleteGroup($id: Int!) {
-    deleteGroup(id: $id) {
+  mutation DeleteGroup($id: Int!, $userId: Int!) {
+    deleteGroup(id: $id, userId: $userId) {
       id
       name
       color
@@ -179,8 +182,8 @@ export const DELETE_GROUP = graphql(`
 `);
 
 export const UPDATE_USER_NAME = graphql(`
-  mutation UpdateUserName($name: String!) {
-    updateName(name: $name) {
+  mutation UpdateUserName($name: String!, $userId: Int!) {
+    updateName(name: $name, userId: $userId) {
       id
       name
       email
@@ -189,8 +192,8 @@ export const UPDATE_USER_NAME = graphql(`
 `);
 
 export const UPDATE_USER_EMAIL = graphql(`
-  mutation UpdateUserEmail($userData: UpdateEmailInput!) {
-    updateEmail(updateEmailInput: $userData) {
+  mutation UpdateUserEmail($updateEmailData: UpdateEmailInput!, $userId: Int!) {
+    updateEmail(updateEmailData: $updateEmailData, userId: $userId) {
       id
       name
       email
@@ -199,8 +202,11 @@ export const UPDATE_USER_EMAIL = graphql(`
 `);
 
 export const UPDATE_USER_PASSWORD = graphql(`
-  mutation UpdateUserPassword($userData: UpdatePasswordInput!) {
-    updatePassword(updatePasswordInput: $userData) {
+  mutation UpdateUserPassword(
+    $updatePasswordData: UpdatePasswordInput!
+    $userId: Int!
+  ) {
+    updatePassword(updatePasswordData: $updatePasswordData, userId: $userId) {
       id
       name
       email

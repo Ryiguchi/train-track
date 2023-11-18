@@ -12,6 +12,7 @@ import {
   updateUserFailedToast,
   updateUserSuccessToast,
 } from '@/utils/helpers/toasts.helpers';
+import { useUserStore } from '@/stores/user.store';
 
 // QUERY
 const {
@@ -22,6 +23,7 @@ const {
 
 // STORE
 const { showToast } = useToastStore();
+const { userId } = useUserStore();
 
 // HOOKS
 const router = useRouter();
@@ -59,7 +61,10 @@ async function handleSubmit() {
       throw new Error('The passwords do not match!');
     }
 
-    await updatePassword({ userData: { newPassword, oldPassword } });
+    await updatePassword({
+      updatePasswordData: { newPassword, oldPassword },
+      userId,
+    });
 
     if (error.value) {
       throw error.value;

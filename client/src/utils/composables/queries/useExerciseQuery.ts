@@ -2,12 +2,15 @@ import { useQuery } from '@urql/vue';
 import { computed } from 'vue';
 import { EXERCISES_AND_GROUPS_QUERY } from '@/lib/graphQL/queries';
 import { useCalenderStore } from '@/stores/calender.store';
+import { useUserStore } from '@/stores/user.store';
 
 export function useExercisesQuery(): TExerciseReturn {
   const { setLegend } = useCalenderStore();
+  const { user } = useUserStore();
 
   const { data, error, fetching, executeQuery, stale } = useQuery({
     query: EXERCISES_AND_GROUPS_QUERY,
+    variables: { userId: user!.id },
   });
 
   const exercises = computed(() => {

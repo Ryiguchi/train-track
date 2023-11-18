@@ -9,6 +9,7 @@ import { useModalsStore } from '@/stores/modals.store';
 
 import { useExercisesQuery } from '@/utils/composables/queries/useExerciseQuery';
 import { useScheduleQuery } from '@/utils/composables/queries/useScheduleQuery';
+import { legendValidator } from '@/lib/types/zod';
 
 // STORE
 const { displayedDate } = storeToRefs(useCalenderStore());
@@ -34,7 +35,7 @@ function handleClickDay(date: string) {
       :displayedDate="displayedDate"
       :changeMonthFn="changeMonth"
       :days="getCalenderDaysArray()"
-      :legend="groups"
+      :legend="legendValidator.parse(groups)"
       :onClickFn="handleClickDay"
     />
     <base-button

@@ -18,10 +18,12 @@ import {
 } from '@/utils/helpers/toasts.helpers';
 
 import { todaysGroupDataValidator } from '@/lib/types/zod';
+import { useUserStore } from '@/stores/user.store';
 
 // STORE
 const { closeSetDailyGroupModal } = useModalsStore();
 const { showToast } = useToastStore();
+const { userId } = useUserStore();
 
 // QUERY
 const { groupNames } = useExercisesQuery();
@@ -39,7 +41,7 @@ function handleSubmit(option: string) {
 
   try {
     const validScheduleData = todaysGroupDataValidator.parse(scheduleData);
-    setTodaysGroup({ scheduleData: validScheduleData });
+    setTodaysGroup({ addScheduleData: validScheduleData, userId });
     closeSetDailyGroupModal();
     showToast(setTodaysGroupSuccessToast);
   } catch (error) {

@@ -1,6 +1,11 @@
 import { GraphQLError } from 'graphql';
 import { prisma } from '../config/prisma.config';
-import { Exercise, ExerciseData } from '../types/resolvers-types';
+import {
+  Exercise,
+  MutationAddExerciseArgs,
+  MutationDeleteExerciseArgs,
+  MutationUpdateExerciseArgs,
+} from '../types/resolvers-types';
 import { isPrismaError } from '../types/predicates';
 import { EErrorActions, getPrismaErrorMessage } from '../utils/error.utils';
 
@@ -17,9 +22,12 @@ export async function getexercisesByUserId(userId: number) {
   return exercises as unknown as Exercise[];
 }
 
-export async function addExercise(exerciseData: ExerciseData, userId: number) {
+export async function addExercise({
+  addExerciseData,
+  userId,
+}: MutationAddExerciseArgs) {
   const data = {
-    ...exerciseData,
+    ...addExerciseData,
     userId,
   };
 
@@ -36,7 +44,7 @@ export async function addExercise(exerciseData: ExerciseData, userId: number) {
       const errorMessage = getPrismaErrorMessage(
         error.code,
         EErrorActions.ADD_EXERCISE,
-        data.name
+        addExerciseData.name
       );
 
       throw new GraphQLError(errorMessage);
@@ -45,18 +53,18 @@ export async function addExercise(exerciseData: ExerciseData, userId: number) {
   }
 }
 
-export async function updateExercise(
-  fieldsToUpdate: IExerciseUpdateInput,
-  userId: number
-) {
+export async function updateExercise({
+  updateExerciseData,
+  userId,
+}: MutationUpdateExerciseArgs) {
   try {
     const updatedExercise = await prisma.exercise.update({
       where: {
-        id: fieldsToUpdate.id,
+        id: updateExerciseData.id,
         userId,
       },
       data: {
-        ...fieldsToUpdate,
+        ...updateExerciseData,
       },
       include: {
         group: true,
@@ -69,7 +77,7 @@ export async function updateExercise(
       const errorMessage = getPrismaErrorMessage(
         error.code,
         EErrorActions.ADD_EXERCISE,
-        fieldsToUpdate.name
+        updateExerciseData.name
       );
 
       throw new GraphQLError(errorMessage);
@@ -78,7 +86,10 @@ export async function updateExercise(
   }
 }
 
-export async function deleteExercise(id: number, userId: number) {
+export async function deleteExercise({
+  id,
+  userId,
+}: MutationDeleteExerciseArgs) {
   const deletedExercise = await prisma.exercise.delete({
     where: { id, userId },
   });

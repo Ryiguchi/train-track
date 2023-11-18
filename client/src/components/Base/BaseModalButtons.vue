@@ -22,5 +22,6 @@ const emits = defineEmits<{
 .button-wrapper
   display: flex
   justify-content: space-between
+  gap: $sp_4
   width: 100%
 </style>

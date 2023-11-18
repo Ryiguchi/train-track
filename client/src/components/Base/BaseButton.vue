@@ -30,7 +30,7 @@ button
   &.secondary
     background-color: $c2
   &.small
-    width: 13.5rem
+    min-width: 11rem
     height: 4rem
     font-size: $fs_1
   &.sm

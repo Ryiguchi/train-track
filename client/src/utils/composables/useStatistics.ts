@@ -321,7 +321,7 @@ function formatLast10(workouts: Workout[], statType: EStatTypes) {
       data = +(workout.totalWeight / totalSets).toFixed(1);
     }
 
-    formatedWorkouts.push({
+    formatedWorkouts.unshift({
       date: workout.date,
       data,
     });

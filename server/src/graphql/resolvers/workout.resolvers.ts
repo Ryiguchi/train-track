@@ -36,18 +36,14 @@ export const workoutResolvers: Resolvers = {
   },
 
   Query: {
-    workoutsByUserId: async (parent, args, { req }) =>
-      await getWorkouts(req.userId),
+    workoutsByUserId: async (parent, args) => await getWorkouts(args.userId),
 
-    previousWorkout: async (parent, args, { req }) =>
-      await getPreviousWorkout(args.exerciseId, req.userId),
+    previousWorkout: async (parent, args) => await getPreviousWorkout(args),
   },
 
   Mutation: {
-    addWorkout: async (parent, args, { req }) =>
-      await addWorkout(args.workoutData, req.userId),
+    addWorkout: async (parent, args) => await addWorkout(args),
 
-    deleteWorkout: async (parent, args, { req }) =>
-      await deleteWorkout(args.id, req.userId),
+    deleteWorkout: async (parent, args) => await deleteWorkout(args),
   },
 };
