@@ -81,6 +81,7 @@ async function handleOnClick() {
   right: 0
   z-index: 100
   width: 100vw
+  max-width: 40rem
   height: 100vh
   background: $c-dk
   display: flex
