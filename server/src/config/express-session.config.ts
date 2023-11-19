@@ -5,6 +5,10 @@ import session from 'express-session';
 const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
 
 const isCookieSecure = process.env.NODE_ENV === 'production';
+const sameSite =
+  process.env.NODE_ENV === 'production' ? ('none' as 'none') : false;
+const domain =
+  process.env.NODE_ENV === 'production' ? '.ryaniguchi.com' : 'localhost:3000';
 
 export const sessionOptions = {
   store: new (pgSession(session))({
@@ -19,8 +23,8 @@ export const sessionOptions = {
     httpOnly: true,
     secure: isCookieSecure,
     maxAge: 24 * 60 * 60 * 1000,
-    // domain: '.ryaniguchi.com',
-    // sameSite: 'none' as 'none',
-    // path: '/',
+    // domain: domain,
+    sameSite: sameSite,
+    path: '/',
   },
 };

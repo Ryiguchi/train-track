@@ -8,8 +8,10 @@ export const corsOptions: CorsOptions = {
     'https://hetzner-server.ryaniguchi.com',
     'https://accounts.google.com',
     'http://localhost:5173',
+    'http://localhost:5174',
     'https://www.traintrack.ryaniguchi.com',
     'https://traintrack.ryaniguchi.com',
   ],
   credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
 };

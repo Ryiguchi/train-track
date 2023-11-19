@@ -23,18 +23,31 @@ export const useCalenderStore = defineStore('calender', {
   },
 
   getters: {
+    getDisplayedDateStringDay15(state): string {
+      const displayedDateArr = this.displayedDate.split(' ');
+      const dateWithDay = `${displayedDateArr[0]} 15, ${displayedDateArr[1]}`;
+
+      return dateWithDay;
+    },
     getISOFormattedDisplayedMonth(state): string {
-      const dateTimestamp = new Date(this.displayedDate).setDate(15);
+      const dateTimestamp = new Date(
+        this.getDisplayedDateStringDay15
+      ).getTime();
       return new Date(dateTimestamp).toISOString().slice(0, 7);
     },
 
     getISOFormattedPrevMonth(state): string {
-      const dateTimestamp = new Date(this.displayedDate).setDate(15);
+      const dateTimestamp = new Date(
+        this.getDisplayedDateStringDay15
+      ).getTime();
       return new Date(dateTimestamp - 3000000000).toISOString().slice(0, 7);
     },
 
     getISOFormattedNextMonth(state): string {
-      const dateTimestamp = new Date(this.displayedDate).setDate(15);
+      const dateTimestamp = new Date(
+        this.getDisplayedDateStringDay15
+      ).getTime();
+
       return new Date(dateTimestamp + 3000000000).toISOString().slice(0, 7);
     },
 
@@ -77,7 +90,7 @@ export const useCalenderStore = defineStore('calender', {
     },
 
     changeMonth(direction: string) {
-      this.displayedDate = getDate(direction, this.displayedDate);
+      this.displayedDate = getDate(direction, this.getDisplayedDateStringDay15);
     },
 
     getCalenderDaysArray(exercise: string | null = null): ICalenderDay[] {
@@ -87,10 +100,10 @@ export const useCalenderStore = defineStore('calender', {
         : undefined;
 
       const { prevDayNum, prevWeekdayNum } = getPrevMonthLastDayNum(
-        this.displayedDate
+        this.getDisplayedDateStringDay15
       );
 
-      const daysInMonth = getDaysInMonth(this.displayedDate);
+      const daysInMonth = getDaysInMonth(this.getDisplayedDateStringDay15);
 
       let days = [];
 
@@ -146,10 +159,12 @@ export const useCalenderStore = defineStore('calender', {
           dayNum: i,
           color,
         };
+
         days.push(daysData);
       }
 
       const daysCurrentLength = days.length;
+
       for (let i = 1; i <= 42 - daysCurrentLength; i++) {
         const date = getFullISODate(this.getISOFormattedNextMonth, i);
 
@@ -173,6 +188,7 @@ export const useCalenderStore = defineStore('calender', {
           dayNum: i,
           color,
         };
+
         days.push(daysData);
       }
 

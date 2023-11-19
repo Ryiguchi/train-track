@@ -38,6 +38,7 @@ export async function addExercise({
         group: true,
       },
     });
+
     return exercise as unknown as Exercise;
   } catch (error: any) {
     if (isPrismaError(error)) {

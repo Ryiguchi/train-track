@@ -15,6 +15,7 @@ export function convertDayOfWeek(dayNum: number) {
 
 export function convertDateToCalenderFormat(date: string) {
   const newDate = new Date(date);
+
   const monthName = newDate.toLocaleString('default', { month: 'long' });
   const day = newDate.getDate();
   let formattedDay;
@@ -90,41 +91,41 @@ export function getCalenderData(
   return calenderData;
 }
 
-export function getCalenderDaysArray() {
-  const date = 'October 2023';
-  const displayedDate = new Date('October 2023');
+// export function getCalenderDaysArray() {
+//   const date = 'October 2023';
+//   const displayedDate = new Date('October 2023');
 
-  // previous month
-  const lastDayOfPreviousMonthTimeStamp = displayedDate.setDate(0);
-  const previousMonthNumber = displayedDate.getMonth();
-  const lastDayOfPreviousMonth = new Date(lastDayOfPreviousMonthTimeStamp);
+//   // previous month
+//   const lastDayOfPreviousMonthTimeStamp = displayedDate.setDate(0);
+//   const previousMonthNumber = displayedDate.getMonth();
+//   const lastDayOfPreviousMonth = new Date(lastDayOfPreviousMonthTimeStamp);
 
-  const previousMonthLastDayNum = lastDayOfPreviousMonth.getDate();
-  const previousMonthDayOfWeek = convertDayOfWeek(
-    lastDayOfPreviousMonth.getDay()
-  );
+//   const previousMonthLastDayNum = lastDayOfPreviousMonth.getDate();
+//   const previousMonthDayOfWeek = convertDayOfWeek(
+//     lastDayOfPreviousMonth.getDay()
+//   );
 
-  //current month
-  const daysInCurrentMonth = new Date(
-    new Date(lastDayOfPreviousMonthTimeStamp + 3000000000).setDate(0)
-  ).getDate();
+//   //current month
+//   const daysInCurrentMonth = new Date(
+//     new Date(lastDayOfPreviousMonthTimeStamp + 3000000000).setDate(0)
+//   ).getDate();
 
-  let days = [];
-  if (previousMonthDayOfWeek !== 6) {
-    for (let i = 0; i <= previousMonthDayOfWeek; i++) {
-      days.unshift(previousMonthLastDayNum - i);
-    }
-  }
+//   let days = [];
+//   if (previousMonthDayOfWeek !== 6) {
+//     for (let i = 0; i <= previousMonthDayOfWeek; i++) {
+//       days.unshift(previousMonthLastDayNum - i);
+//     }
+//   }
 
-  for (let i = 1; i <= daysInCurrentMonth; i++) {
-    days.push(i);
-  }
+//   for (let i = 1; i <= daysInCurrentMonth; i++) {
+//     days.push(i);
+//   }
 
-  const daysCurrentLength = days.length;
-  for (let i = 1; i <= 42 - daysCurrentLength; i++) {
-    days.push(i);
-  }
-}
+//   const daysCurrentLength = days.length;
+//   for (let i = 1; i <= 42 - daysCurrentLength; i++) {
+//     days.push(i);
+//   }
+// }
 
 export function getPrevMonthLastDayNum(displayedDate: string) {
   const timestamp = new Date(displayedDate).setDate(0);
@@ -140,7 +141,7 @@ export function getPrevMonthLastDayNum(displayedDate: string) {
 }
 
 export function getDaysInMonth(date: string) {
-  const timestamp = new Date(date).setDate(0) + 3000000000;
+  const timestamp = new Date(date).getTime();
   const lastDay = new Date(timestamp).setDate(0);
   const lastDayNum = new Date(lastDay).getDate();
 

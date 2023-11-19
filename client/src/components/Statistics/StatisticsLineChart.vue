@@ -31,7 +31,6 @@ const chartOnClick: ChartOnClick = (event, element, chart: ICustomChart) => {
     const index: number = element[0].index;
 
     const data = chart._metasets[0]._dataset.data[index];
-    console.log(chart._metasets[0]._dataset.data[index]);
   }
 };
 </script>
